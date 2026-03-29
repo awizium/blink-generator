@@ -10,7 +10,7 @@
 
 ## Быстрый старт
 ```bash
-    git clone https://github.com/YOUR_USERNAME/blink-generator.git
+    git clone https://github.com/awizium/blink-generator.git
     cd blink-generator
     start.bat
 ```
