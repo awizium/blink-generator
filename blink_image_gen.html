@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Blink Generator</title>
+  <style>
+    /* DEFAULT = Серая (приятная глазу, по умолчанию) */
+    :root {
+      --bg: #1e1e22;
+      --bg1: #242428;
+      --bg2: #212125;
+      --bg3: #2c2c32;
+      --bg4: #38383f;
+      --border: #303038;
+      --border-l: #3a3a44;
+      --text: #d0d0d6;
+      --text2: #a8a8b2;
+      --text3: #747480;
+      --text4: #58585f;
+      --accent: #5b9ef0;
+      --accent2: #4088e0;
+      --accent-d: #1a2e4a;
+      --green: #4abe6a;
+      --green-d: #142e1e;
+      --red: #e85454;
+      --red-d: #361212;
+      --yellow: #d4a824;
+      --yellow-d: #30260c;
+      --purple: #9878d0;
+      --purple-d: #241838;
+      --r: 8px;
+      --rl: 12px;
+      --sh: 0 1px 3px rgba(0, 0, 0, .3);
+    }
+
+    /* Белая */
+    [data-theme="white"] {
+      --bg: #fff;
+      --bg1: #fff;
+      --bg2: #fafafa;
+      --bg3: #f0f0f0;
+      --bg4: #e4e4e4;
+      --border: #e8e8e8;
+      --border-l: #ddd;
+      --text: #111;
+      --text2: #333;
+      --text3: #777;
+      --text4: #aaa;
+      --accent: #2563eb;
+      --accent2: #1d4ed8;
+      --accent-d: #dbeafe;
+      --green: #16a34a;
+      --green-d: #dcfce7;
+      --red: #dc2626;
+      --red-d: #fee2e2;
+      --yellow: #ca8a04;
+      --yellow-d: #fefce8;
+      --purple: #7c3aed;
+      --purple-d: #f3e8ff;
+      --sh: 0 1px 3px rgba(0, 0, 0, .04)
+    }
+
+    /* Тёмно-серая */
+    [data-theme="dgray"] {
+      --bg: #0a0a0b;
+      --bg1: #111113;
+      --bg2: #18181b;
+      --bg3: #222226;
+      --bg4: #2c2c32;
+      --border: #2a2a30;
+      --border-l: #353540;
+      --text: #e4e4e7;
+      --text2: #b0b0b8;
+      --text3: #77778a;
+      --text4: #55556a;
+      --accent: #3b82f6;
+      --accent2: #2563eb;
+      --accent-d: #1e3a5f;
+      --green: #22c55e;
+      --green-d: #14532d;
+      --red: #ef4444;
+      --red-d: #450a0a;
+      --yellow: #eab308;
+      --yellow-d: #422006;
+      --purple: #a855f7;
+      --purple-d: #3b0764;
+      --sh: 0 1px 4px rgba(0, 0, 0, .3)
+    }
+
+    /* Тёмная */
+    [data-theme="dark"] {
+      --bg: #050506;
+      --bg1: #0a0a0c;
+      --bg2: #0f0f12;
+      --bg3: #161619;
+      --bg4: #1e1e22;
+      --border: #1a1a20;
+      --border-l: #252530;
+      --text: #d4d4d8;
+      --text2: #a0a0aa;
+      --text3: #6a6a78;
+      --text4: #4a4a58;
+      --accent: #3b82f6;
+      --accent2: #2563eb;
+      --accent-d: #172e50;
+      --green: #22c55e;
+      --green-d: #0f3d20;
+      --red: #ef4444;
+      --red-d: #3a0808;
+      --yellow: #eab308;
+      --yellow-d: #352004;
+      --purple: #a855f7;
+      --purple-d: #2e0a5a;
+      --sh: 0 1px 4px rgba(0, 0, 0, .5)
+    }
+
+    /* Полночь */
+    [data-theme="midnight"] {
+      --bg: #070b14;
+      --bg1: #0c1120;
+      --bg2: #111827;
+      --bg3: #1e283a;
+      --bg4: #2a3a50;
+      --border: #1e2d4a;
+      --border-l: #2a3d5a;
+      --text: #e2e8f0;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --text4: #475569;
+      --accent: #6366f1;
+      --accent2: #4f46e5;
+      --accent-d: #1e1b4b;
+      --green: #34d399;
+      --green-d: #064e3b;
+      --red: #f87171;
+      --red-d: #450a0a;
+      --yellow: #fbbf24;
+      --yellow-d: #422006;
+      --purple: #a78bfa;
+      --purple-d: #2e1065;
+      --sh: 0 1px 4px rgba(0, 0, 0, .4)
+    }
+
+    /* Бездна */
+    [data-theme="abyss"] {
+      --bg: #03050a;
+      --bg1: #060a14;
+      --bg2: #0a0f1e;
+      --bg3: #14203a;
+      --bg4: #1e3050;
+      --border: #152040;
+      --border-l: #1e3060;
+      --text: #c8d6e5;
+      --text2: #8395a7;
+      --text3: #576574;
+      --text4: #3a4a5c;
+      --accent: #0abde3;
+      --accent2: #0984b0;
+      --accent-d: #0a2940;
+      --green: #00d2d3;
+      --green-d: #0a2940;
+      --red: #ff6b6b;
+      --red-d: #3a0a0a;
+      --yellow: #feca57;
+      --yellow-d: #3a2a06;
+      --purple: #48dbfb;
+      --purple-d: #0a2030;
+      --sh: 0 1px 4px rgba(0, 0, 0, .5)
+    }
+
+    /* Дракула */
+    [data-theme="dracula"] {
+      --bg: #181a26;
+      --bg1: #21222c;
+      --bg2: #282a36;
+      --bg3: #333548;
+      --bg4: #44475a;
+      --border: #383a4a;
+      --border-l: #44475a;
+      --text: #f8f8f2;
+      --text2: #ccc;
+      --text3: #888;
+      --text4: #6272a4;
+      --accent: #bd93f9;
+      --accent2: #a070e0;
+      --accent-d: #2a1a4a;
+      --green: #50fa7b;
+      --green-d: #0a3a1a;
+      --red: #ff5555;
+      --red-d: #3a0a0a;
+      --yellow: #f1fa8c;
+      --yellow-d: #3a3a06;
+      --purple: #ff79c6;
+      --purple-d: #3a0a2a;
+      --sh: 0 1px 4px rgba(0, 0, 0, .4)
+    }
+
+    /* Уголь */
+    [data-theme="coal"] {
+      --bg: #101014;
+      --bg1: #16161c;
+      --bg2: #1c1c24;
+      --bg3: #26262f;
+      --bg4: #32323e;
+      --border: #242430;
+      --border-l: #30303e;
+      --text: #ddd;
+      --text2: #aaa;
+      --text3: #777;
+      --text4: #555;
+      --accent: #60a5fa;
+      --accent2: #3b82f6;
+      --accent-d: #1a2e50;
+      --green: #34d399;
+      --green-d: #0a3020;
+      --red: #f87171;
+      --red-d: #3a0a0a;
+      --yellow: #fbbf24;
+      --yellow-d: #3a2a06;
+      --purple: #c084fc;
+      --purple-d: #2a1040;
+      --sh: 0 1px 4px rgba(0, 0, 0, .35)
+    }
+
+    /* Графит */
+    [data-theme="graphite"] {
+      --bg: #141418;
+      --bg1: #1a1a20;
+      --bg2: #222228;
+      --bg3: #2c2c34;
+      --bg4: #383842;
+      --border: #2a2a32;
+      --border-l: #363640;
+      --text: #e0e0e0;
+      --text2: #b0b0b0;
+      --text3: #808080;
+      --text4: #5a5a5a;
+      --accent: #f97316;
+      --accent2: #ea580c;
+      --accent-d: #3a1a08;
+      --green: #22c55e;
+      --green-d: #143020;
+      --red: #ef4444;
+      --red-d: #3a0a0a;
+      --yellow: #eab308;
+      --yellow-d: #352008;
+      --purple: #a855f7;
+      --purple-d: #2a1050;
+      --sh: 0 1px 4px rgba(0, 0, 0, .35)
+    }
+
+    /* Лес */
+    [data-theme="forest"] {
+      --bg: #060d06;
+      --bg1: #0a150a;
+      --bg2: #111f11;
+      --bg3: #1e351e;
+      --bg4: #2a4a2a;
+      --border: #1a3a1a;
+      --border-l: #2a4a2a;
+      --text: #d1fae5;
+      --text2: #86efac;
+      --text3: #4ade80;
+      --text4: #22633a;
+      --accent: #22c55e;
+      --accent2: #16a34a;
+      --accent-d: #052e16;
+      --green: #4ade80;
+      --green-d: #052e16;
+      --red: #fca5a5;
+      --red-d: #450a0a;
+      --yellow: #fde047;
+      --yellow-d: #422006;
+      --purple: #86efac;
+      --purple-d: #052e16;
+      --sh: 0 1px 4px rgba(0, 0, 0, .4)
+    }
+
+    /* Роза */
+    [data-theme="rose"] {
+      --bg: #0d0608;
+      --bg1: #15090d;
+      --bg2: #1f1015;
+      --bg3: #351a28;
+      --bg4: #4a2438;
+      --border: #3a1a28;
+      --border-l: #4a2a38;
+      --text: #fce7f3;
+      --text2: #f9a8d4;
+      --text3: #ec4899;
+      --text4: #7a2050;
+      --accent: #f43f5e;
+      --accent2: #e11d48;
+      --accent-d: #4c0519;
+      --green: #fb7185;
+      --green-d: #4c0519;
+      --red: #fca5a5;
+      --red-d: #450a0a;
+      --yellow: #fde047;
+      --yellow-d: #422006;
+      --purple: #fda4af;
+      --purple-d: #4c0519;
+      --sh: 0 1px 4px rgba(0, 0, 0, .4)
+    }
+
+    /* Закат */
+    [data-theme="sunset"] {
+      --bg: #0f0805;
+      --bg1: #1a0f08;
+      --bg2: #241710;
+      --bg3: #3a2518;
+      --bg4: #503520;
+      --border: #3a2018;
+      --border-l: #4a3028;
+      --text: #fed7aa;
+      --text2: #fdba74;
+      --text3: #fb923c;
+      --text4: #7c3006;
+      --accent: #f97316;
+      --accent2: #ea580c;
+      --accent-d: #431407;
+      --green: #fb923c;
+      --green-d: #431407;
+      --red: #fca5a5;
+      --red-d: #450a0a;
+      --yellow: #fde047;
+      --yellow-d: #422006;
+      --purple: #fdba74;
+      --purple-d: #431407;
+      --sh: 0 1px 4px rgba(0, 0, 0, .4)
+    }
+
+    /* Океан */
+    [data-theme="ocean"] {
+      --bg: #04100e;
+      --bg1: #081a16;
+      --bg2: #0e2420;
+      --bg3: #18382e;
+      --bg4: #224a3e;
+      --border: #1a3a2e;
+      --border-l: #2a4a3e;
+      --text: #ccfbf1;
+      --text2: #5eead4;
+      --text3: #2dd4bf;
+      --text4: #156a5a;
+      --accent: #14b8a6;
+      --accent2: #0d9488;
+      --accent-d: #052e28;
+      --green: #2dd4bf;
+      --green-d: #052e28;
+      --red: #fca5a5;
+      --red-d: #450a0a;
+      --yellow: #fde047;
+      --yellow-d: #422006;
+      --purple: #5eead4;
+      --purple-d: #052e28;
+      --sh: 0 1px 4px rgba(0, 0, 0, .4)
+    }
+
+    /* Аметист */
+    [data-theme="amethyst"] {
+      --bg: #0c0812;
+      --bg1: #120e1a;
+      --bg2: #1a1424;
+      --bg3: #281e38;
+      --bg4: #362a4a;
+      --border: #241a36;
+      --border-l: #342a46;
+      --text: #ede9fe;
+      --text2: #c4b5fd;
+      --text3: #a78bfa;
+      --text4: #5a3d8a;
+      --accent: #8b5cf6;
+      --accent2: #7c3aed;
+      --accent-d: #1e0a40;
+      --green: #a78bfa;
+      --green-d: #1e0a40;
+      --red: #fca5a5;
+      --red-d: #450a0a;
+      --yellow: #fde047;
+      --yellow-d: #422006;
+      --purple: #c084fc;
+      --purple-d: #2a1050;
+      --sh: 0 1px 4px rgba(0, 0, 0, .4)
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      transition: background .3s, color .3s
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg4);
+      border-radius: 3px
+    }
+
+    .layout {
+      display: flex;
+      height: 100vh
+    }
+
+    .lp {
+      width: 240px;
+      min-width: 160px;
+      max-width: 400px;
+      background: var(--bg1);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transition: background .3s
+    }
+
+    .rp {
+      width: 255px;
+      min-width: 180px;
+      max-width: 400px;
+      background: var(--bg1);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: background .3s
+    }
+
+    .rz {
+      width: 4px;
+      cursor: col-resize;
+      background: transparent;
+      transition: background .2s;
+      flex-shrink: 0;
+      z-index: 10
+    }
+
+    .rz:hover,
+    .rz.act {
+      background: var(--accent)
+    }
+
+    .lp-h {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .lp-h h2 {
+      font-size: 14px;
+      font-weight: 600
+    }
+
+    .cl {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px
+    }
+
+    .ci {
+      padding: 8px 10px;
+      border-radius: var(--r);
+      cursor: pointer;
+      margin-bottom: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      border: 1px solid transparent;
+      transition: all .12s
+    }
+
+    .ci:hover {
+      background: var(--bg3)
+    }
+
+    .ci.act {
+      background: var(--accent-d);
+      border-color: var(--accent)
+    }
+
+    .ci-i {
+      flex: 1;
+      min-width: 0
+    }
+
+    .ci-n {
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .ci-m {
+      font-size: 9px;
+      color: var(--text4);
+      margin-top: 1px
+    }
+
+    .ci-a {
+      display: flex;
+      gap: 1px;
+      opacity: 0;
+      transition: opacity .12s
+    }
+
+    .ci:hover .ci-a {
+      opacity: 1
+    }
+
+    .cib {
+      background: none;
+      border: none;
+      color: var(--text4);
+      cursor: pointer;
+      font-size: 11px;
+      padding: 2px 3px;
+      border-radius: 3px
+    }
+
+    .cib:hover {
+      color: var(--text)
+    }
+
+    .cib.dng:hover {
+      color: var(--red)
+    }
+
+    .ctr {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0
+    }
+
+    .ch {
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 42px;
+      gap: 6px;
+      transition: background .3s
+    }
+
+    .ch-l {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0
+    }
+
+    .bdg {
+      font-size: 10px;
+      color: var(--text3);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px
+    }
+
+    .cnt {
+      font-size: 10px;
+      color: var(--text4)
+    }
+
+    .mob {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text3);
+      padding: 3px 7px;
+      cursor: pointer;
+      font-size: 13px
+    }
+
+    .mob:hover {
+      color: var(--text)
+    }
+
+    .msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth
+    }
+
+    .empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text4);
+      gap: 8px
+    }
+
+    .empty-i {
+      font-size: 40px;
+      opacity: .25
+    }
+
+    .empty-t {
+      font-size: 13px
+    }
+
+    .m {
+      border-radius: var(--rl);
+      padding: 12px 14px;
+      max-width: 88%;
+      position: relative;
+      animation: fi .2s;
+      box-shadow: var(--sh)
+    }
+
+    @keyframes fi {
+      from {
+        opacity: 0;
+        transform: translateY(4px)
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    .m-u {
+      background: var(--accent-d);
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      align-self: flex-end
+    }
+
+    .m-b {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      align-self: flex-start
+    }
+
+    .m-e {
+      background: var(--red-d);
+      border: 1px solid color-mix(in srgb, var(--red) 20%, transparent);
+      align-self: flex-start
+    }
+
+    .mt {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      gap: 6px
+    }
+
+    .ml {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .4px
+    }
+
+    .m-u .ml {
+      color: var(--accent)
+    }
+
+    .m-b .ml {
+      color: var(--green)
+    }
+
+    .m-e .ml {
+      color: var(--red)
+    }
+
+    .mmtag {
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text4);
+      font-size: 9px;
+      margin-left: 4px
+    }
+
+    .mm {
+      display: flex;
+      align-items: center;
+      gap: 3px
+    }
+
+    .mti {
+      font-size: 9px;
+      color: var(--text4)
+    }
+
+    .macts {
+      display: flex;
+      gap: 1px;
+      opacity: 0;
+      transition: opacity .12s
+    }
+
+    .m:hover .macts {
+      opacity: 1
+    }
+
+    .ma {
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: var(--text4);
+      font-size: 10px;
+      padding: 2px 4px;
+      cursor: pointer;
+      transition: all .1s;
+      line-height: 1
+    }
+
+    .ma:hover {
+      color: var(--text2);
+      border-color: var(--border);
+      background: var(--bg3)
+    }
+
+    .ma.dng:hover {
+      color: var(--red);
+      background: var(--red-d)
+    }
+
+    .mtx {
+      font-size: 13px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word
+    }
+
+    .m-e .etx {
+      color: var(--red);
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      opacity: .85
+    }
+
+    .m img.gi {
+      max-width: 100%;
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      margin-top: 6px;
+      display: block;
+      cursor: zoom-in;
+      transition: border-color .15s
+    }
+
+    .m img.gi:hover {
+      border-color: var(--accent)
+    }
+
+    .info {
+      font-size: 9px;
+      color: var(--text4);
+      margin-top: 2px
+    }
+
+    .dlr {
+      display: flex;
+      gap: 3px;
+      margin-top: 6px;
+      flex-wrap: wrap
+    }
+
+    .rsn {
+      background: var(--purple-d);
+      border: 1px solid color-mix(in srgb, var(--purple) 20%, transparent);
+      border-radius: 6px;
+      padding: 7px 9px;
+      margin-top: 6px
+    }
+
+    .rsn summary {
+      color: var(--purple);
+      font-size: 10px;
+      cursor: pointer;
+      font-weight: 500
+    }
+
+    .rsn .rtx {
+      color: var(--text2);
+      font-size: 10px;
+      margin-top: 5px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+      max-height: 180px;
+      overflow-y: auto
+    }
+
+    .usg {
+      font-size: 9px;
+      color: var(--text4);
+      margin-top: 4px
+    }
+
+    .rwb {
+      margin-top: 5px
+    }
+
+    .rwb summary {
+      color: var(--text4);
+      font-size: 9px;
+      cursor: pointer
+    }
+
+    .rwb .rw {
+      font-size: 9px;
+      color: var(--text4);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 5px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 160px;
+      overflow-y: auto;
+      margin-top: 2px
+    }
+
+    .swn {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      margin-top: 6px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 5px
+    }
+
+    .swn button {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text3);
+      font-size: 12px;
+      padding: 1px 6px;
+      cursor: pointer;
+      line-height: 1.2
+    }
+
+    .swn button:hover {
+      color: var(--text);
+      background: var(--bg3)
+    }
+
+    .swn button:disabled {
+      opacity: .25;
+      cursor: default
+    }
+
+    .swn span {
+      font-size: 10px;
+      color: var(--text3);
+      min-width: 28px;
+      text-align: center
+    }
+
+    .gi-ind {
+      color: var(--text4);
+      font-size: 12px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .cinp {
+      border-top: 1px solid var(--border);
+      padding: 10px 20px 12px;
+      background: var(--bg1);
+      transition: background .3s
+    }
+
+    .inr {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end
+    }
+
+    .inr textarea {
+      flex: 1;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      color: var(--text);
+      font-size: 13px;
+      padding: 9px 12px;
+      outline: none;
+      resize: none;
+      min-height: 42px;
+      max-height: 180px;
+      font-family: inherit;
+      line-height: 1.5;
+      transition: border-color .2s
+    }
+
+    .inr textarea:focus {
+      border-color: var(--accent)
+    }
+
+    .inr textarea::placeholder {
+      color: var(--text4)
+    }
+
+    .sbtn {
+      border: none;
+      border-radius: var(--r);
+      color: #fff;
+      font-size: 15px;
+      padding: 9px 13px;
+      cursor: pointer;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      transition: background .15s
+    }
+
+    .sbtn.go {
+      background: var(--accent)
+    }
+
+    .sbtn.go:hover {
+      background: var(--accent2)
+    }
+
+    .sbtn.stp {
+      background: var(--red)
+    }
+
+    .sbtn.stp:hover {
+      background: #c62828
+    }
+
+    .sbtn:disabled {
+      opacity: .3;
+      cursor: default
+    }
+
+    .rps {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px
+    }
+
+    .ss {}
+
+    .ss>.sl {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text4);
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin-bottom: 5px
+    }
+
+    .si,
+    .ssel,
+    .sta {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text);
+      font-size: 11px;
+      padding: 6px 9px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color .2s
+    }
+
+    .si:focus,
+    .ssel:focus,
+    .sta:focus {
+      border-color: var(--accent)
+    }
+
+    .ssel {
+      cursor: pointer
+    }
+
+    .sta {
+      resize: vertical;
+      min-height: 40px
+    }
+
+    .sr {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      margin-top: 4px
+    }
+
+    .sb {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text2);
+      font-size: 10px;
+      padding: 4px 8px;
+      cursor: pointer;
+      transition: all .12s;
+      white-space: nowrap
+    }
+
+    .sb:hover {
+      background: var(--bg3);
+      color: var(--text)
+    }
+
+    .sba {
+      background: var(--accent-d);
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .sba:hover {
+      opacity: .85
+    }
+
+    .sbd {
+      color: var(--red)
+    }
+
+    .sbd:hover {
+      background: var(--red-d)
+    }
+
+    .ke {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 7px;
+      margin-top: 5px
+    }
+
+    .ke .si {
+      margin-bottom: 4px
+    }
+
+    .slr {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 3px
+    }
+
+    .slr input[type=range] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 3px;
+      background: var(--bg3);
+      border-radius: 2px;
+      outline: none
+    }
+
+    .slr input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid var(--bg1)
+    }
+
+    .sli {
+      width: 44px;
+      font-size: 10px;
+      text-align: center;
+      padding: 3px 2px
+    }
+
+    .hn {
+      font-size: 9px;
+      color: var(--text4);
+      margin-top: 2px;
+      line-height: 1.35
+    }
+
+    .wb {
+      font-size: 9px;
+      color: var(--yellow);
+      background: var(--yellow-d);
+      border: 1px solid color-mix(in srgb, var(--yellow) 30%, transparent);
+      border-radius: 4px;
+      padding: 4px 7px;
+      margin-top: 4px;
+      line-height: 1.3
+    }
+
+    .thr {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px
+    }
+
+    .th-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 32px
+    }
+
+    .thp {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      transition: all .15s
+    }
+
+    .thp:hover {
+      transform: scale(1.15)
+    }
+
+    .thp.act {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent)
+    }
+
+    .thn {
+      font-size: 7px;
+      color: var(--text4);
+      text-align: center;
+      margin-top: 2px;
+      line-height: 1.15;
+      width: 100%;
+      overflow: hidden
+    }
+
+    .spn {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--border);
+      border-top-color: var(--text3);
+      border-radius: 50%;
+      animation: sp .6s linear infinite
+    }
+
+    @keyframes sp {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .tst {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background: var(--bg3);
+      color: var(--text);
+      padding: 8px 18px;
+      border-radius: var(--r);
+      font-size: 12px;
+      border: 1px solid var(--border-l);
+      opacity: 0;
+      transition: all .25s;
+      pointer-events: none;
+      z-index: 9999;
+      box-shadow: var(--sh)
+    }
+
+    .tst.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0)
+    }
+
+    .ov {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .95);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out;
+      padding: 16px
+    }
+
+    .ov.act {
+      display: flex
+    }
+
+    .ov img {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 6px;
+      object-fit: contain
+    }
+
+    .ubar {
+      position: fixed;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg3);
+      border: 1px solid var(--border-l);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: var(--r);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 900;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
+      animation: fi .2s
+    }
+
+    .ubar button {
+      background: var(--accent);
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-size: 11px
+    }
+
+    .ubar .ubx {
+      background: none;
+      border: none;
+      color: var(--text3);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 4px
+    }
+
+    .pbd {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 99
+    }
+
+    .pbd.show {
+      display: block
+    }
+
+    @media(max-width:950px) {
+
+      .lp,
+      .rp {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+        transition: transform .22s
+      }
+
+      .lp {
+        left: 0;
+        transform: translateX(-100%)
+      }
+
+      .lp.open {
+        transform: translateX(0)
+      }
+
+      .rp {
+        right: 0;
+        transform: translateX(100%)
+      }
+
+      .rp.open {
+        transform: translateX(0)
+      }
+
+      .mob {
+        display: block
+      }
+
+      .rz {
+        display: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout" id="layout">
+    <div class="lp" id="lp">
+      <div class="lp-h">
+        <h2>Чаты</h2><button class="sb sba" onclick="newChat()">+ Новый</button>
+      </div>
+      <div class="cl" id="cl"></div>
+    </div>
+    <div class="rz" id="resL"></div>
+    <div class="ctr">
+      <div class="ch">
+        <div class="ch-l"><button class="mob" onclick="togL()">☰</button><span class="bdg" id="hM">—</span><span
+            class="cnt" id="hC"></span></div>
+        <div style="display:flex;gap:3px"><button class="sb" onclick="expChat()" title="Экспорт">📋</button><button
+            class="sb sbd" onclick="clrChat()" title="Очистить">🗑️</button><button class="mob"
+            onclick="togR()">⚙️</button></div>
+      </div>
+      <div class="msgs" id="msgs">
+        <div class="empty" id="emS">
+          <div class="empty-i">🎨</div>
+          <div class="empty-t">Blink Generator</div>
+        </div>
+      </div>
+      <div class="cinp">
+        <div class="inr"><textarea id="pr" placeholder="Сообщение... (Enter — отправить)" rows="1"></textarea><button
+            class="sbtn go" id="sBtn" onclick="onSend()">▶</button></div>
+      </div>
+    </div>
+    <div class="rz" id="resR"></div>
+    <div class="rp" id="rp">
+      <div class="rps">
+        <div class="ss">
+          <div class="sl">🎨 Тема</div>
+          <div class="thr" id="thR"></div>
+        </div>
+        <div class="ss">
+          <div class="sl">🔑 API Ключ</div><select class="ssel" id="kS" onchange="onKS()">
+            <option value="">— Выберите —</option>
+          </select>
+          <div class="sr"><button class="sb sba" onclick="newKE()">+ Новый</button><button class="sb"
+              onclick="edK()">✏️</button><button class="sb sbd" onclick="delK()">🗑️</button></div>
+          <div id="kE" style="display:none" class="ke"><input class="si" type="text" id="kN"
+              placeholder="Название" /><input class="si" type="password" id="kV" placeholder="API ключ" />
+            <div class="sr" style="justify-content:flex-end"><button class="sb" onclick="togKV()">👁️</button><button
+                class="sb" onclick="canKE()">✕</button><button class="sb sba" onclick="savK()" id="kSB">OK</button>
+            </div>
+          </div>
+        </div>
+        <div class="ss">
+          <div class="sl">🤖 Модель</div>
+          <div style="display:flex;gap:2px;margin-bottom:4px;flex-wrap:wrap" id="mC"></div><select class="ssel" id="mS"
+            onchange="onMS()"></select>
+          <div class="wb" id="mW" style="display:none"></div>
+        </div>
+        <div class="ss">
+          <div class="sl">🧠 Контекст</div>
+          <div class="slr"><input type="range" id="cR" min="0" max="50" value="20" oninput="onCR()"><input
+              class="si sli" type="number" id="cI" value="20" min="0" max="999" oninput="onCI()"></div>
+          <div class="hn" id="cH">Последние 20 сообщений.</div>
+        </div>
+        <div class="ss">
+          <div class="sl">📝 Системный промпт</div><textarea class="sta" id="sP" placeholder="Роль/поведение модели..."
+            rows="2" oninput="svD()"></textarea>
+        </div>
+        <div class="ss">
+          <div class="sl">🚫 Негативный промпт</div><textarea class="sta" id="nP" placeholder="Чего избегать..."
+            rows="2" oninput="svD()"></textarea>
+          <div class="hn">Добавляется как «Avoid: ...»</div>
+        </div>
+        <div class="ss" id="iSS">
+          <div class="sl">🖼️ Изображение</div><select class="ssel" id="aR" onchange="svD()">
+            <option value="">Авто</option>
+            <option value="1:1">1:1 Квадрат</option>
+            <option value="16:9">16:9 Широкий</option>
+            <option value="9:16">9:16 Портрет</option>
+            <option value="4:3">4:3</option>
+            <option value="3:4">3:4</option>
+          </select>
+          <div class="hn">Gemini сам выбирает разрешение. Точный размер задать нельзя.</div>
+        </div>
+        <div class="ss">
+          <div class="sl">🌡️ Temperature</div>
+          <div class="slr"><input type="range" id="tR" min="0" max="200" value="100" oninput="onTR()"><input
+              class="si sli" type="number" id="tI" value="1.0" min="0" max="2" step="0.1" oninput="onTI()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pbd" id="pbd" onclick="clP()"></div>
+  <div class="ov" id="ov" onclick="clOv()"><img id="ovI" src="" /></div>
+  <div class="tst" id="tst"></div>
+  <div id="uC"></div>
+
+  <script>
+    const DB = 'BlinkDB2'; let idb = null;
+    function odb() { return new Promise((r, j) => { const q = indexedDB.open(DB, 1); q.onupgradeneeded = e => e.target.result.createObjectStore('img'); q.onsuccess = e => { idb = e.target.result; r() }; q.onerror = j }) }
+    function iput(k, v) { return new Promise(r => { const t = idb.transaction('img', 'readwrite'); t.objectStore('img').put(v, k); t.oncomplete = r }) }
+    function iget(k) { return new Promise(r => { const t = idb.transaction('img', 'readonly'); const q = t.objectStore('img').get(k); q.onsuccess = () => r(q.result) }) }
+    function ik() { return 'i' + Date.now() + '_' + Math.random().toString(36).slice(2, 6) }
+    async function sImg(d) { const k = ik(); await iput(k, d); return k }
+    async function lImg(k) { if (!k) return null; if (k.startsWith('data:') || k.startsWith('http')) return k; return await iget(k) }
+
+    const AM = ['google/gemini-2.5-flash-image', 'google/gemini-3-pro-image', 'google/gemini-3.1-flash-image-preview', 'google/gemini-2.0-flash', 'google/gemini-2.0-flash-lite', 'google/gemini-2.5-flash', 'google/gemini-2.5-flash-lite', 'google/gemini-2.5-pro', 'google/gemini-3-flash', 'google/gemini-3-pro-preview', 'google/gemini-3.1-flash-lite-preview', 'google/gemini-3.1-pro-preview', 'anthropic/claude-3-haiku', 'anthropic/claude-3-opus', 'anthropic/claude-3.5-haiku', 'anthropic/claude-3.5-sonnet', 'anthropic/claude-3.5-sonnet-20240620', 'anthropic/claude-3.7-sonnet', 'anthropic/claude-haiku-4.5', 'anthropic/claude-opus-4', 'anthropic/claude-opus-4.1', 'anthropic/claude-opus-4.5', 'anthropic/claude-opus-4.6', 'anthropic/claude-sonnet-4', 'anthropic/claude-sonnet-4.5', 'anthropic/claude-sonnet-4.6', 'openai/gpt-3.5-turbo', 'openai/gpt-4-turbo', 'openai/gpt-4.1', 'openai/gpt-4.1-mini', 'openai/gpt-4.1-nano', 'openai/gpt-4o', 'openai/gpt-4o-mini', 'openai/gpt-5', 'openai/gpt-5-chat', 'openai/gpt-5-mini', 'openai/gpt-5-nano', 'openai/gpt-5-pro', 'openai/gpt-5.1-instant', 'openai/gpt-5.1-thinking', 'openai/gpt-5.2', 'openai/gpt-5.2-chat', 'openai/gpt-5.2-pro', 'openai/gpt-5.3-chat', 'openai/gpt-5.4', 'openai/gpt-5.4-mini', 'openai/gpt-5.4-nano', 'openai/gpt-5.4-pro', 'openai/o1', 'openai/o3', 'openai/o3-mini', 'openai/o3-pro', 'openai/o4-mini', 'deepseek/deepseek-r1', 'deepseek/deepseek-v3', 'deepseek/deepseek-v3.1', 'deepseek/deepseek-v3.1-terminus', 'deepseek/deepseek-v3.2', 'deepseek/deepseek-v3.2-thinking', 'xai/grok-2-vision', 'xai/grok-3', 'xai/grok-3-fast', 'xai/grok-3-mini', 'xai/grok-3-mini-fast', 'xai/grok-4', 'xai/grok-4-fast-non-reasoning', 'xai/grok-4-fast-reasoning', 'xai/grok-4.1-fast-non-reasoning', 'xai/grok-4.1-fast-reasoning', 'meta/llama-3.1-70b', 'meta/llama-3.1-8b', 'meta/llama-3.2-11b', 'meta/llama-3.2-1b', 'meta/llama-3.2-3b', 'meta/llama-3.2-90b', 'meta/llama-3.3-70b', 'meta/llama-4-maverick', 'meta/llama-4-scout', 'alibaba/qwen-3-14b', 'alibaba/qwen-3-235b', 'alibaba/qwen-3-30b', 'alibaba/qwen-3-32b', 'alibaba/qwen3-235b-a22b-thinking', 'alibaba/qwen3-coder', 'alibaba/qwen3-coder-30b-a3b', 'alibaba/qwen3-coder-next', 'alibaba/qwen3-coder-plus', 'alibaba/qwen3-max', 'alibaba/qwen3-max-preview', 'alibaba/qwen3-max-thinking', 'alibaba/qwen3-vl-instruct', 'alibaba/qwen3-vl-thinking', 'alibaba/qwen3.5-flash', 'alibaba/qwen3.5-plus', 'mistral/codestral', 'mistral/devstral-2', 'mistral/devstral-small', 'mistral/devstral-small-2', 'mistral/magistral-medium', 'mistral/magistral-small', 'mistral/ministral-14b', 'mistral/ministral-3b', 'mistral/ministral-8b', 'mistral/mistral-large-3', 'mistral/mistral-medium', 'mistral/mistral-nemo', 'mistral/mistral-small', 'mistral/mixtral-8x22b-instruct', 'mistral/pixtral-12b', 'mistral/pixtral-large', 'moonshotai/kimi-k2', 'moonshotai/kimi-k2-0905', 'moonshotai/kimi-k2-thinking', 'moonshotai/kimi-k2-thinking-turbo', 'moonshotai/kimi-k2-turbo', 'moonshotai/kimi-k2.5', 'amazon/nova-2-lite', 'amazon/nova-lite', 'amazon/nova-micro', 'amazon/nova-pro', 'arcee-ai/trinity-large-preview', 'arcee-ai/trinity-mini', 'cohere/command-a', 'inception/mercury-2', 'inception/mercury-coder-small', 'kwaipilot/kat-coder-pro-v1', 'kwaipilot/kat-coder-pro-v2', 'meituan/longcat-flash-chat', 'meituan/longcat-flash-thinking', 'meituan/longcat-flash-thinking-2601', 'minimax/minimax-m2', 'minimax/minimax-m2.1', 'minimax/minimax-m2.1-lightning', 'minimax/minimax-m2.5', 'minimax/minimax-m2.5-highspeed', 'minimax/minimax-m2.7', 'minimax/minimax-m2.7-highspeed', 'morph/morph-v3-fast', 'morph/morph-v3-large', 'nvidia/nemotron-3-nano-30b-a3b', 'nvidia/nemotron-3-super-120b-a12b', 'nvidia/nemotron-nano-12b-v2-vl', 'nvidia/nemotron-nano-9b-v2', 'perplexity/sonar', 'perplexity/sonar-pro', 'perplexity/sonar-reasoning-pro', 'prime-intellect/intellect-3', 'xiaomi/mimo-v2-flash', 'xiaomi/mimo-v2-pro', 'zai/glm-4.5', 'zai/glm-4.5-air', 'zai/glm-4.5v', 'zai/glm-4.6', 'zai/glm-4.6v', 'zai/glm-4.6v-flash', 'zai/glm-4.7', 'zai/glm-4.7-flash', 'zai/glm-4.7-flashx', 'zai/glm-5', 'zai/glm-5-turbo'];
+    const IM = new Set(['google/gemini-2.5-flash-image', 'google/gemini-3-pro-image', 'google/gemini-3.1-flash-image-preview']);
+    let mF = 'image';
+    function rM() { const c = document.getElementById('mC'); c.innerHTML = '';[{ id: 'image', l: '🖼️ Картинки' }, { id: 'chat', l: '💬 Чат' }, { id: 'all', l: 'Все' }].forEach(f => { const b = document.createElement('button'); b.className = 'sb' + (mF === f.id ? ' sba' : ''); b.textContent = f.l; b.onclick = () => { mF = f.id; rM() }; c.appendChild(b) }); const s = document.getElementById('mS'), p = s.value || ls('model') || 'google/gemini-3.1-flash-image-preview'; s.innerHTML = ''; const li = mF === 'all' ? AM : AM.filter(m => mF === 'image' ? IM.has(m) : !IM.has(m)); const g = new Map(); li.forEach(m => { const v = m.split('/')[0]; if (!g.has(v)) g.set(v, []); g.get(v).push(m) }); for (const [v, ms] of g) { const og = document.createElement('optgroup'); og.label = v[0].toUpperCase() + v.slice(1); ms.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m.split('/')[1] + (IM.has(m) ? ' 🖼️' : ''); og.appendChild(o) }); s.appendChild(og) }; if ([...s.options].some(o => o.value === p)) s.value = p; onMS() }
+    function onMS() { const m = document.getElementById('mS').value; ss('model', m); document.getElementById('hM').textContent = m ? m.split('/')[1] : '—'; const w = document.getElementById('mW'); if (m && !IM.has(m)) { w.textContent = 'ℹ️ Текстовая модель — не генерирует картинки.'; w.style.display = 'block' } else w.style.display = 'none'; document.getElementById('iSS').style.display = IM.has(m) ? '' : 'none' }
+
+    // ===== THEMES =====
+    const TH = [
+      { id: 'default', n: 'Серая', c: '#1e1e22' },
+      { id: 'dgray', n: 'Тёмно-серая', c: '#18181b' },
+      { id: 'dark', n: 'Тёмная', c: '#0a0a0c' },
+      { id: 'coal', n: 'Уголь', c: '#16161c' },
+      { id: 'graphite', n: 'Графит', c: '#1a1a20' },
+      { id: 'midnight', n: 'Полночь', c: '#111827' },
+      { id: 'abyss', n: 'Бездна', c: '#0a0f1e' },
+      { id: 'dracula', n: 'Дракула', c: '#282a36' },
+      { id: 'forest', n: 'Лес', c: '#0a150a' },
+      { id: 'ocean', n: 'Океан', c: '#081a16' },
+      { id: 'amethyst', n: 'Аметист', c: '#120e1a' },
+      { id: 'rose', n: 'Роза', c: '#15090d' },
+      { id: 'sunset', n: 'Закат', c: '#1a0f08' },
+      { id: 'white', n: 'Белая', c: '#ffffff', ring: '#ccc' },
+    ];
+    function rTh() {
+      const r = document.getElementById('thR'); r.innerHTML = '';
+      const cur = ls('theme') || 'default';
+      TH.forEach(t => {
+        const w = document.createElement('div'); w.className = 'th-item';
+        const d = document.createElement('div'); d.className = 'thp' + (cur === t.id ? ' act' : '');
+        d.style.background = t.c; if (t.ring) d.style.borderColor = t.ring;
+        d.title = t.n.replace('\n', ' ');
+        d.onclick = () => { ss('theme', t.id); aTh(); rTh() };
+        w.appendChild(d);
+        const l = document.createElement('div'); l.className = 'thn'; l.textContent = t.n.replace('\n', ' ');
+        w.appendChild(l); r.appendChild(w);
+      });
+    }
+    function aTh() { const t = ls('theme') || 'default'; document.body.setAttribute('data-theme', t === 'default' ? '' : t) }
+
+    function ls(k) { return localStorage.getItem('bg_' + k) } function ss(k, v) { localStorage.setItem('bg_' + k, v) }
+    let _sd; function svD() { clearTimeout(_sd); _sd = setTimeout(svAll, 400) }
+    function svAll() { ss('sP', document.getElementById('sP').value); ss('nP', document.getElementById('nP').value); ss('aR', document.getElementById('aR').value); ss('ctx', document.getElementById('cI').value); ss('tmp', document.getElementById('tI').value) }
+    function ldAll() { document.getElementById('sP').value = ls('sP') || ''; document.getElementById('nP').value = ls('nP') || ''; document.getElementById('aR').value = ls('aR') || ''; const cx = parseInt(ls('ctx')) || 20; document.getElementById('cR').value = Math.min(cx, 50); document.getElementById('cI').value = cx; uCH(cx); const tp = parseFloat(ls('tmp')); if (!isNaN(tp)) { document.getElementById('tR').value = Math.round(tp * 100); document.getElementById('tI').value = tp.toFixed(1) } }
+    function onCR() { const v = +document.getElementById('cR').value; document.getElementById('cI').value = v; uCH(v); svD() }
+    function onCI() { let v = parseInt(document.getElementById('cI').value) || 0; if (v < 0) v = 0; document.getElementById('cR').value = Math.min(v, 50); uCH(v); svD() }
+    function uCH(v) { document.getElementById('cH').textContent = v === 0 ? 'Без памяти — каждый запрос отдельно.' : 'Последние ' + v + ' сообщ. как контекст.' }
+    function onTR() { document.getElementById('tI').value = (+document.getElementById('tR').value / 100).toFixed(1); svD() }
+    function onTI() { let v = parseFloat(document.getElementById('tI').value); if (isNaN(v)) v = 1; v = Math.max(0, Math.min(2, v)); document.getElementById('tR').value = Math.round(v * 100); svD() }
+    function gK() { try { return JSON.parse(localStorage.getItem('bg_keys') || '[]') } catch { return [] } } function sKS(k) { localStorage.setItem('bg_keys', JSON.stringify(k)) }
+    function rKS() { const s = document.getElementById('kS'), ks = gK(), sv = ls('selK') || ''; s.innerHTML = '<option value="">— Выберите —</option>'; ks.forEach(k => { const o = document.createElement('option'); o.value = k.id; o.textContent = k.name || '—'; if (k.id === sv) o.selected = true; s.appendChild(o) }) }
+    function onKS() { ss('selK', document.getElementById('kS').value) }
+    function aKey() { const id = document.getElementById('kS').value; return (gK().find(k => k.id === id) || {}).key || '' }
+    let eKI = ''; function newKE() { eKI = ''; document.getElementById('kN').value = ''; document.getElementById('kV').value = ''; document.getElementById('kV').type = 'password'; document.getElementById('kSB').textContent = 'OK'; document.getElementById('kE').style.display = 'block' }
+    function canKE() { document.getElementById('kE').style.display = 'none'; eKI = '' }
+    function savK() { const n = document.getElementById('kN').value.trim(), v = document.getElementById('kV').value.trim(); if (!v) { tst('Введите ключ'); return } let ks = gK(); if (eKI) { const i = ks.findIndex(k => k.id === eKI); if (i !== -1) { ks[i].name = n || 'Без имени'; ks[i].key = v } sKS(ks); rKS(); canKE(); tst('Обновлён') } else { const id = 'k' + Date.now() + Math.random().toString(36).slice(2, 5); ks.push({ id, name: n || 'Без имени', key: v }); sKS(ks); ss('selK', id); rKS(); canKE(); tst('Добавлен') } }
+    function edK() { const id = document.getElementById('kS').value; if (!id) { tst('Выберите ключ'); return } const k = gK().find(x => x.id === id); if (!k) return; eKI = id; document.getElementById('kN').value = k.name; document.getElementById('kV').value = k.key; document.getElementById('kV').type = 'password'; document.getElementById('kSB').textContent = 'OK'; document.getElementById('kE').style.display = 'block' }
+    function delK() { const id = document.getElementById('kS').value; if (!id) { tst('Выберите ключ'); return } if (!confirm('Удалить?')) return; sKS(gK().filter(k => k.id !== id)); ss('selK', ''); rKS(); canKE(); tst('Удалён') }
+    function togKV() { const i = document.getElementById('kV'); i.type = i.type === 'password' ? 'text' : 'password' }
+    function gC() { try { return JSON.parse(localStorage.getItem('bg_chats') || '[]') } catch { return [] } } function sC(c) { localStorage.setItem('bg_chats', JSON.stringify(c)) }
+    let cur = null, mE = [], mc = 0;
+    function newChat() { const id = 'c' + Date.now(), ch = { id, name: 'Новый чат', created: Date.now(), messages: [] }; const cs = gC(); cs.unshift(ch); sC(cs); swChat(id); tst('Чат создан') }
+    function swChat(id) { savCur(); const cs = gC(); cur = cs.find(c => c.id === id) || null; if (!cur) { newChat(); return } ss('aCh', id); rCL(); rMsgs(); clP() }
+    function savCur() { if (!cur) return; cur.messages = mE.map(m => ({ role: m.role, text: m.text, model: m.model || '', imageKeys: m.imageKeys || [], reasoning: m.reasoning || '', usage: m.usage || null, elapsed: m.elapsed || '', ts: m.ts || Date.now(), swipes: m.swipes || [], swipeIdx: m.swipeIdx || 0 })); const cs = gC(); const i = cs.findIndex(c => c.id === cur.id); if (i !== -1) cs[i] = cur; else cs.unshift(cur); sC(cs) }
+    function delChat(id) { if (!confirm('Удалить чат?')) return; let cs = gC().filter(c => c.id !== id); sC(cs); if (cur && cur.id === id) { cur = null; mE = []; if (cs.length) swChat(cs[0].id); else newChat() } else rCL(); tst('Чат удалён') }
+    function renChat(id) { const cs = gC(), ch = cs.find(c => c.id === id); if (!ch) return; const n = prompt('Название:', ch.name); if (n === null) return; ch.name = n.trim() || 'Чат'; if (cur && cur.id === id) cur.name = ch.name; sC(cs); rCL() }
+    function rCL() { const l = document.getElementById('cl'), cs = gC(), aid = cur ? cur.id : ''; l.innerHTML = ''; if (!cs.length) { l.innerHTML = '<div style="color:var(--text4);font-size:11px;text-align:center;padding:20px">Нет чатов</div>'; return } cs.forEach(c => { const d = document.createElement('div'); d.className = 'ci' + (c.id === aid ? ' act' : ''); const dt = new Date(c.created); d.innerHTML = `<div class="ci-i" onclick="swChat('${c.id}')"><div class="ci-n">${E(c.name)}</div><div class="ci-m">${(c.messages || []).length} · ${dt.toLocaleDateString('ru', { day: '2-digit', month: '2-digit' })} ${dt.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })}</div></div><div class="ci-a"><button class="cib" onclick="event.stopPropagation();renChat('${c.id}')">✏️</button><button class="cib dng" onclick="event.stopPropagation();delChat('${c.id}')">✕</button></div>`; l.appendChild(d) }) }
+    async function rMsgs() { const b = document.getElementById('msgs'); b.innerHTML = ''; mE = []; mc = 0; if (!cur || !cur.messages.length) { b.innerHTML = '<div class="empty" id="emS"><div class="empty-i">🎨</div><div class="empty-t">Blink Generator</div></div>'; uH(); return } for (const m of cur.messages) { if (m.role === 'user') addU(m.text, m.ts, false); else if (m.role === 'assistant') await addB(m.model, m.imageKeys || [], m.text, m.reasoning, m.usage, m.elapsed, null, m.ts, false, m.swipes || [], m.swipeIdx || 0); else if (m.role === 'error') addE(m.model, m.text, null, m.ts, false) } uH(); scB() }
+    function clrChat() { if (!cur || !mE.length) return; if (!confirm('Очистить?')) return; cur.messages = []; mE = []; savCur(); rMsgs(); tst('Очищен') }
+    function uH() { document.getElementById('hC').textContent = mE.length ? mE.length + ' сообщ.' : '' }
+    function T(ts) { const d = ts ? new Date(ts) : new Date(); return d.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) }
+    let undoS = [], undoT = null; function pUndo(l, fn) { undoS = [{ l, fn }]; sUBar(l) } function sUBar(l) { clearTimeout(undoT); document.getElementById('uC').innerHTML = `<div class="ubar"><span>${E(l)}</span><button onclick="doUndo()">Отменить</button><button class="ubx" onclick="dUndo()">✕</button></div>`; undoT = setTimeout(dUndo, 8000) } function doUndo() { if (!undoS.length) return; undoS.pop().fn(); dUndo(); tst('Отменено') } function dUndo() { clearTimeout(undoT); document.getElementById('uC').innerHTML = ''; undoS = [] }
+    function rmE() { const e = document.getElementById('emS'); if (e) e.remove() }
+    function fLast(r) { for (let i = mE.length - 1; i >= 0; i--)if (mE[i].role === r) return mE[i].id; return null }
+    function addU(text, ts, save = true) { rmE(); const b = document.getElementById('msgs'), id = 'm' + (++mc), d = document.createElement('div'); d.className = 'm m-u'; d.id = id; d.innerHTML = `<div class="mt"><span class="ml">Вы</span><div class="mm"><span class="mti">${T(ts)}</span><div class="macts" id="a_${id}"></div></div></div><div class="mtx">${E(text)}</div>`; b.appendChild(d); mE.push({ id, role: 'user', text, ts: ts || Date.now(), el: d, imageKeys: [], swipes: [], swipeIdx: 0 }); rActs(); if (save) { uH(); savCur() } scB() }
+    async function addB(model, imageKeys, text, reasoning, usage, elapsed, rawData, ts, save = true, swipes = [], swipeIdx = 0) { rmE(); const b = document.getElementById('msgs'), id = 'm' + (++mc), d = document.createElement('div'); d.className = 'm m-b'; d.id = id; const lI = []; for (const k of (imageKeys || [])) { const s = await lImg(k); if (s) lI.push({ k, s }) } let h = `<div class="mt"><span class="ml">Ассистент<span class="mmtag">${E((model || '').split('/')[1] || '')}</span></span><div class="mm"><span class="mti">${T(ts)}</span><div class="macts" id="a_${id}"></div></div></div>`; if (reasoning) h += `<details class="rsn"><summary>🧠 Рассуждение</summary><div class="rtx">${E(reasoning)}</div></details>`; if (lI.length) { lI.forEach((im, i) => { h += `<img class="gi" src="${EA(im.s)}" alt="img" onclick="opOv(this.src)"/><div class="info" id="nf_${id}_${i}"></div>` }); h += '<div class="dlr">'; lI.forEach((im, i) => { h += `<button class="sb" style="font-size:10px;padding:3px 7px" data-src="${encodeURIComponent(im.s)}" onclick="dlI(this,${i})">⬇️${lI.length > 1 ? ' #' + (i + 1) : ' Скачать'}</button>` }); h += '</div>' } if (text) h += `<div class="mtx">${E(text)}</div>`; if (!lI.length && !text && !reasoning) h += `<div class="mtx" style="color:var(--text4)">Пустой ответ. Возможно цензура заблокировала содержимое. Попробуйте переформулировать промпт.</div>`; if (swipes && swipes.length > 1) h += `<div class="swn"><button onclick="swM('${id}',-1)"${swipeIdx <= 0 ? ' disabled' : ''}>◀</button><span>${swipeIdx + 1} / ${swipes.length}</span><button onclick="swM('${id}',1)"${swipeIdx >= swipes.length - 1 ? ' disabled' : ''}>▶</button></div>`; const up = []; if (usage) { if (usage.prompt_tokens != null) up.push('Запрос: ' + usage.prompt_tokens); if (usage.completion_tokens != null) up.push('Ответ: ' + usage.completion_tokens); if (usage.total_tokens != null) up.push('Всего: ' + usage.total_tokens + ' токенов') } if (elapsed) up.push('Время: ' + elapsed + 'с'); if (up.length) h += `<div class="usg">${up.join(' · ')}</div>`; if (rawData) h += `<details class="rwb"><summary>📄 Сырой ответ API</summary><div class="rw">${E(JSON.stringify(rawData, null, 2))}</div></details>`; d.innerHTML = h; b.appendChild(d); mE.push({ id, role: 'assistant', text, imageKeys: imageKeys || [], model, reasoning, usage, elapsed, ts: ts || Date.now(), el: d, swipes: swipes || [], swipeIdx: swipeIdx || 0 }); rActs(); if (save) { uH(); savCur() } lI.forEach((im, i) => { const img = new Image(); img.onload = function () { const el = document.getElementById(`nf_${id}_${i}`); if (!el) return; let nf = `${this.naturalWidth} × ${this.naturalHeight}`; if (im.s.startsWith('data:')) { const kb = Math.round(im.s.length * 3 / 4 / 1024); nf += ` · ${kb > 1024 ? (kb / 1024).toFixed(1) + ' МБ' : kb + ' КБ'}` } el.textContent = nf }; img.src = im.s }); scB() }
+    function addE(model, errText, rawData, ts, save = true) { rmE(); const b = document.getElementById('msgs'), id = 'm' + (++mc), d = document.createElement('div'); d.className = 'm m-e'; d.id = id; let h = `<div class="mt"><span class="ml">Ошибка<span class="mmtag">${E((model || '').split('/')[1] || '')}</span></span><div class="mm"><span class="mti">${T(ts)}</span><div class="macts" id="a_${id}"></div></div></div><div class="etx">${E(errText)}</div>`; if (rawData) h += `<details class="rwb"><summary>📄 Ответ</summary><div class="rw">${E(JSON.stringify(rawData, null, 2))}</div></details>`; d.innerHTML = h; b.appendChild(d); mE.push({ id, role: 'error', text: errText, model, ts: ts || Date.now(), el: d, imageKeys: [], swipes: [], swipeIdx: 0 }); rActs(); if (save) { uH(); savCur() } scB() }
+    function addLd() { const b = document.getElementById('msgs'), d = document.createElement('div'); d.className = 'gi-ind'; d.id = 'ldB'; d.innerHTML = '<span class="spn"></span> Генерирую... <span id="gTm" style="color:var(--text3)">0.0с</span>'; b.appendChild(d); scB(); stTm() }
+    function rmLd() { spTm(); const e = document.getElementById('ldB'); if (e) e.remove() }
+    let gTI = null, gT0 = 0; function stTm() { gT0 = Date.now(); gTI = setInterval(() => { const el = document.getElementById('gTm'); if (el) el.textContent = ((Date.now() - gT0) / 1000).toFixed(1) + 'с' }, 100) } function spTm() { clearInterval(gTI) }
+    function rActs() { const lu = fLast('user'), lb = fLast('assistant') || fLast('error'); mE.forEach(m => { const a = document.getElementById('a_' + m.id); if (!a) return; let h = ''; if (m.role === 'user') { h += `<button class="ma" onclick="cpT('${m.id}')" title="Копировать">📋</button>`; if (m.id === lu) h += `<button class="ma" onclick="edM('${m.id}')" title="Редактировать">✏️</button>`; h += `<button class="ma dng" onclick="dlM('${m.id}')" title="Удалить">✕</button>` } else if (m.role === 'assistant') { if (m.id === lb) h += `<button class="ma" onclick="reM('${m.id}')" title="Перегенерировать">🔄</button>`; h += `<button class="ma" onclick="cpT('${m.id}')" title="Копировать">📋</button>`; h += `<button class="ma dng" onclick="dlM('${m.id}')" title="Удалить">✕</button>` } else { if (m.id === lb) h += `<button class="ma" onclick="reM('${m.id}')" title="Повторить">🔄</button>`; h += `<button class="ma dng" onclick="dlM('${m.id}')" title="Удалить">✕</button>` } a.innerHTML = h }) }
+    function cpT(id) { const m = mE.find(x => x.id === id); if (!m || !m.text) { tst('Нет текста'); return } navigator.clipboard.writeText(m.text).then(() => tst('Скопировано')) }
+    function dlM(id) { const i = mE.findIndex(x => x.id === id); if (i === -1) return; const en = mE[i], savH = en.el.outerHTML, savI = i; en.el.remove(); mE.splice(i, 1); rActs(); uH(); savCur(); pUndo('Сообщение удалено', () => { const b = document.getElementById('msgs'), tmp = document.createElement('template'); tmp.innerHTML = savH; const r = tmp.content.firstChild; const ref = mE[savI] ? mE[savI].el : null; if (ref) b.insertBefore(r, ref); else b.appendChild(r); en.el = r; mE.splice(savI, 0, en); rActs(); uH(); savCur() }) }
+    function edM(id) { const i = mE.findIndex(x => x.id === id); if (i === -1) return; const en = mE[i]; if (en.role !== 'user') return; const prevPr = document.getElementById('pr').value, savH = en.el.outerHTML, savI = i; document.getElementById('pr').value = en.text; aR(document.getElementById('pr')); document.getElementById('pr').focus(); en.el.remove(); mE.splice(i, 1); rActs(); uH(); savCur(); pUndo('Сообщение в поле ввода', () => { document.getElementById('pr').value = prevPr; aR(document.getElementById('pr')); const b = document.getElementById('msgs'), tmp = document.createElement('template'); tmp.innerHTML = savH; const r = tmp.content.firstChild; const ref = mE[savI] ? mE[savI].el : null; if (ref) b.insertBefore(r, ref); else b.appendChild(r); en.el = r; mE.splice(savI, 0, en); rActs(); uH(); savCur() }) }
+    function reM(id) { const key = aKey(), model = document.getElementById('mS').value; if (!key) { tst('Выберите API ключ'); return } if (!model) { tst('Выберите модель'); return } const i = mE.findIndex(x => x.id === id); if (i === -1) return; const en = mE[i]; let uT = ''; for (let j = i - 1; j >= 0; j--)if (mE[j].role === 'user') { uT = mE[j].text; break } if (!uT) { tst('Нет предыдущего сообщения'); return } const cS = en.swipes ? [...en.swipes] : []; if (en.role === 'assistant' && cS.length === 0) cS.push({ text: en.text, imageKeys: en.imageKeys || [], reasoning: en.reasoning || '', usage: en.usage, elapsed: en.elapsed }); const savH = en.el.outerHTML, savI = i; en.el.remove(); mE.splice(i, 1); rActs(); uH(); savCur(); pUndo('Перегенерация', () => { const b = document.getElementById('msgs'), tmp = document.createElement('template'); tmp.innerHTML = savH; const r = tmp.content.firstChild; const ref = mE[savI] ? mE[savI].el : null; if (ref) b.insertBefore(r, ref); else b.appendChild(r); en.el = r; mE.splice(savI, 0, en); rActs(); uH(); savCur() }); doGen(uT, false, cS) }
+    async function swM(id, dir) { const i = mE.findIndex(x => x.id === id); if (i === -1) return; const m = mE[i]; if (!m.swipes || m.swipes.length <= 1) return; const ni = m.swipeIdx + dir; if (ni < 0 || ni >= m.swipes.length) return; m.swipeIdx = ni; const sw = m.swipes[ni]; m.text = sw.text; m.imageKeys = sw.imageKeys || []; m.reasoning = sw.reasoning || ''; m.usage = sw.usage; m.elapsed = sw.elapsed; m.el.remove(); mE.splice(i, 1); mc--; const after = mE.splice(i); await addB(m.model, m.imageKeys, m.text, m.reasoning, m.usage, m.elapsed, null, m.ts, false, m.swipes, m.swipeIdx); const b = document.getElementById('msgs'); after.forEach(a => b.appendChild(a.el)); mE.push(...after); rActs(); savCur() }
+    function fI(data) { const imgs = new Set(), seen = new Set(); function add(s) { if (!s) return; const f = s.substring(0, 200); if (seen.has(f)) return; seen.add(f); imgs.add(s) } function w(o) { if (!o || typeof o !== 'object') return; if (Array.isArray(o)) { o.forEach(w); return } if (o.mime_type && typeof o.mime_type === 'string' && o.mime_type.startsWith('image/') && o.data) { add('data:' + o.mime_type + ';base64,' + o.data); return } if (o.b64_json && typeof o.b64_json === 'string') { add('data:image/png;base64,' + o.b64_json); return } if (o.url && typeof o.url === 'string') { const u = o.url; if (u.startsWith('data:image') || u.match(/\.(png|jpg|jpeg|webp|gif|svg)(\?.*)?$/i)) { add(u); return } } if (o.image_url && typeof o.image_url === 'object' && o.image_url.url) { add(o.image_url.url); return } for (const k of Object.keys(o)) w(o[k]) } w(data); return [...imgs] }
+    function eC(data) { let t = '', r = ''; try { for (const c of (data.choices || [])) { const m = c.message || c.delta || {}; if (typeof m.content === 'string') t += m.content; else if (Array.isArray(m.content)) m.content.forEach(p => { if (p.type === 'text' && p.text) t += p.text }); if (m.reasoning_content) r += m.reasoning_content; if (m.reasoning) r += (typeof m.reasoning === 'string' ? m.reasoning : JSON.stringify(m.reasoning, null, 2)); if (m.thinking) r += (typeof m.thinking === 'string' ? m.thinking : JSON.stringify(m.thinking, null, 2)) } } catch { } return { text: t.trim(), reasoning: r.trim() } }
+    function bMsgs(uT) { const ctx = parseInt(document.getElementById('cI').value) || 0, sys = document.getElementById('sP').value.trim(), neg = document.getElementById('nP').value.trim(), ar = document.getElementById('aR').value, mdl = document.getElementById('mS').value; let ft = uT; if (IM.has(mdl)) { const p = []; if (ar) p.push(`Aspect ratio: ${ar}.`); if (neg) p.push(`Avoid: ${neg}.`); if (p.length) ft = uT + '\n\n' + p.join(' ') } else if (neg) ft = uT + '\n\n[Avoid: ' + neg + ']'; const ms = []; if (sys) ms.push({ role: 'system', content: sys }); if (ctx > 0) { const h = []; for (const m of mE) { if (m.role === 'user') h.push({ role: 'user', content: m.text }); else if (m.role === 'assistant' && m.text) h.push({ role: 'assistant', content: m.text }) } ms.push(...h.slice(-ctx)) } const last = ms[ms.length - 1]; if (!last || last.role !== 'user' || last.content !== ft) ms.push({ role: 'user', content: ft }); return ms }
+    let isG = false, abC = null;
+    function onSend() { if (isG) stpG(); else gen() }
+    function stpG() { if (abC) { abC.abort(); abC = null } }
+    async function gen() { if (isG) return; const t = document.getElementById('pr').value.trim(); if (!t) return; const key = aKey(), model = document.getElementById('mS').value; if (!key) { tst('Выберите API ключ в настройках →'); return } if (!model) { tst('Выберите модель'); return } if (!cur) newChat(); document.getElementById('pr').value = ''; aR(document.getElementById('pr')); doGen(t, true, []) }
+    async function doGen(uT, addUser, exSw = []) { const key = aKey(), model = document.getElementById('mS').value; if (!key) { tst('Выберите API ключ'); return } if (!model) { tst('Выберите модель'); return } isG = true; const btn = document.getElementById('sBtn'); btn.className = 'sbtn stp'; btn.innerHTML = '⏹'; if (addUser) { addU(uT); if (cur && cur.name === 'Новый чат') cur.name = uT.length > 40 ? uT.substring(0, 40) + '…' : uT; rCL() } const aM = bMsgs(uT), tmp = parseFloat(document.getElementById('tI').value); addLd(); abC = new AbortController(); try { const body = { model, messages: aM }; if (!isNaN(tmp)) body.temperature = tmp; const resp = await fetch('https://core.blink.new/api/v1/ai/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key }, body: JSON.stringify(body), signal: abC.signal }); const elapsed = ((Date.now() - gT0) / 1000).toFixed(1); rmLd(); let data; const rt = await resp.text(); try { data = JSON.parse(rt) } catch { addE(model, 'Ответ не JSON:\n' + rt.substring(0, 600)); return } if (!resp.ok) { const em = data.error?.message || data.message || 'HTTP ' + resp.status; const ec = data.error?.code || ''; addE(model, `Ошибка (${resp.status})${ec ? ' [' + ec + ']' : ''}:\n${em}`, data); return } const images = fI(data), { text, reasoning } = eC(data); const iks = []; for (const src of images) { const k = await sImg(src); iks.push(k) } const ns = { text, imageKeys: iks, reasoning, usage: data.usage || null, elapsed }; const allSw = [...exSw, ns]; await addB(model, iks, text, reasoning, data.usage || null, elapsed, data, null, true, allSw, allSw.length - 1) } catch (e) { rmLd(); if (e.name === 'AbortError') tst('Остановлено'); else addE(model || '', 'Ошибка сети: ' + e.message) } finally { isG = false; abC = null; const btn = document.getElementById('sBtn'); btn.className = 'sbtn go'; btn.innerHTML = '▶'; btn.disabled = false } }
+    function expChat() { if (!mE.length) { tst('Пусто'); return } let t = `Blink Generator — ${cur?.name || 'Чат'}\n${'═'.repeat(40)}\n\n`; mE.forEach(m => { const l = m.role === 'user' ? 'ВЫ' : m.role === 'assistant' ? 'АССИСТЕНТ' : 'ОШИБКА'; t += `[${l}]${m.model ? ' (' + m.model + ')' : ''} ${T(m.ts)}\n${m.text || '—'}\n${m.imageKeys?.length ? '(' + m.imageKeys.length + ' изобр.)\n' : ''}\n` }); navigator.clipboard.writeText(t).then(() => tst('Экспортировано')) }
+    function dlI(b, i) { const s = decodeURIComponent(b.dataset.src); if (!s) return; const a = document.createElement('a'); if (s.startsWith('data:')) { a.href = s; a.download = `blink_${Date.now()}_${i + 1}.${(s.match(/image\/(\w+)/) || [, 'png'])[1]}` } else { a.href = s; a.download = `blink_${Date.now()}.png`; a.target = '_blank' } document.body.appendChild(a); a.click(); a.remove(); tst('Скачивание начато') }
+    function opOv(s) { document.getElementById('ovI').src = s; document.getElementById('ov').classList.add('act') }
+    function clOv() { document.getElementById('ov').classList.remove('act'); document.getElementById('ovI').src = '' }
+    function togL() { document.getElementById('lp').classList.toggle('open'); document.getElementById('pbd').classList.toggle('show') }
+    function togR() { document.getElementById('rp').classList.toggle('open'); document.getElementById('pbd').classList.toggle('show') }
+    function clP() { document.getElementById('lp').classList.remove('open'); document.getElementById('rp').classList.remove('open'); document.getElementById('pbd').classList.remove('show') }
+    function aR(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 180) + 'px' }
+    function E(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML }
+    function EA(s) { if (!s) return ''; return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }
+    function tst(m) { const t = document.getElementById('tst'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2500) }
+    function scB() { const c = document.getElementById('msgs'); requestAnimationFrame(() => { c.scrollTop = c.scrollHeight }) }
+    function initResize() { sR('resL', 'lp', 'left'); sR('resR', 'rp', 'right') }
+    function sR(hid, pid, side) { const h = document.getElementById(hid), p = document.getElementById(pid); if (!h || !p) return; let sx, sw; h.addEventListener('mousedown', e => { e.preventDefault(); sx = e.clientX; sw = p.offsetWidth; h.classList.add('act'); function mv(e) { const dx = side === 'left' ? e.clientX - sx : sx - e.clientX; const nw = Math.max(160, Math.min(400, sw + dx)); p.style.width = nw + 'px'; p.style.minWidth = nw + 'px' } function up() { h.classList.remove('act'); document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up); ss(side + 'W', p.offsetWidth) } document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up) }); const sv = ls(side + 'W'); if (sv) { p.style.width = sv + 'px'; p.style.minWidth = sv + 'px' } }
+    async function init() { await odb(); aTh(); rTh(); rKS(); rM(); ldAll(); initResize(); const cs = gC(), aid = ls('aCh'); if (!cs.length) newChat(); else if (aid && cs.find(c => c.id === aid)) swChat(aid); else swChat(cs[0].id) }
+    init();
+    document.getElementById('pr').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!isG) gen() } });
+    document.getElementById('pr').addEventListener('input', function () { aR(this) });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') clOv(); if (e.ctrlKey && e.key === 'z') { e.preventDefault(); doUndo() } });
+    window.addEventListener('beforeunload', () => { savCur(); svAll() });
+  </script>
+</body>
+
+</html>
