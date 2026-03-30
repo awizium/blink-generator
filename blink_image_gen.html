@@ -2495,6 +2495,7 @@
     let currentChat = null;
     let messageEntries = [];
     let messageCounter = 0;
+    let chatFullyLoaded = false;
 
     function newChat() {
       const id = 'c' + Date.now();
@@ -2509,6 +2510,8 @@
     function switchChat(id) {
       saveCurrentChat();
       cancelEdit(); // cancel any in-progress edit
+      chatFullyLoaded = false;
+      
       const chats = getChats();
       currentChat = chats.find(c => c.id === id) || null;
       if (!currentChat) { newChat(); return; }
@@ -2520,6 +2523,7 @@
 
     function saveCurrentChat() {
       if (!currentChat) return;
+      if (!chatFullyLoaded) return;
       currentChat.messages = messageEntries.map(m => ({
         role: m.role,
         text: m.text,
@@ -2610,6 +2614,8 @@
     }
 
     async function renderMessages() {
+      chatFullyLoaded = false;
+
       const box = document.getElementById('msgs');
       box.innerHTML = '';
       messageEntries = [];
@@ -2618,6 +2624,7 @@
       if (!currentChat || !currentChat.messages.length) {
         box.innerHTML = '<div class="empty" id="emS"><div class="empty-i">🎨</div><div class="empty-t">Blink Generator</div></div>';
         updateHeader();
+        chatFullyLoaded = true;
         return;
       }
 
@@ -2633,6 +2640,7 @@
 
       updateHeader();
       scrollToBottom();
+      chatFullyLoaded = true;
     }
 
     function clrChat() {
