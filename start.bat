@@ -33,6 +33,6 @@ echo  [*] Запускаю на http://localhost:8080
 echo  [*] Ctrl+C для остановки
 echo.
 
-start "" "http://localhost:8080/blink_image_gen.html"
+start "" "http://localhost:8080/index.html"
 python -c "import http.server,functools;h=type('H',(http.server.SimpleHTTPRequestHandler,),{'end_headers':lambda s:(s.send_header('Cache-Control','no-store'),http.server.SimpleHTTPRequestHandler.end_headers(s))});http.server.HTTPServer(('',8080),h).serve_forever()"
 pause

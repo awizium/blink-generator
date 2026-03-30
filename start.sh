@@ -37,9 +37,9 @@ echo ""
 
 # Открываем браузер (фон)
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    open "http://localhost:8080/blink_image_gen.html" 2>/dev/null &
+    open "http://localhost:8080/index.html" 2>/dev/null &
 else
-    xdg-open "http://localhost:8080/blink_image_gen.html" 2>/dev/null &
+    xdg-open "http://localhost:8080/index.html" 2>/dev/null &
 fi
 
 # Запускаем сервер с отключённым кэшем

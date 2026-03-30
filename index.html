@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="description" content="Blink Generator — веб-интерфейс для генерации изображений через AI">
+  <link rel="manifest" href="manifest.json">
+  <title>Blink Generator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="layout" id="layout">
+
+    <!-- =============================================
+         Left Panel — Chat List
+         ============================================= -->
+    <div class="lp" id="lp">
+      <div class="lp-h">
+        <div class="lp-h-top">
+          <h2>Чаты</h2>
+          <div class="lp-h-btns">
+            <button class="sb sba" onclick="newChat()">+ Новый</button>
+          </div>
+        </div>
+        <input class="lp-search" id="chatSearch" type="text" placeholder="🔍 Поиск по чатам..." oninput="filterChats()">
+      </div>
+      <div class="cl" id="cl"></div>
+    </div>
+
+    <div class="rz" id="resL"></div>
+
+    <!-- =============================================
+         Center — Messages
+         ============================================= -->
+    <div class="ctr">
+      <div class="ch">
+        <div class="ch-l">
+          <button class="mob" onclick="togL()">☰</button>
+          <span class="bdg" id="hM">—</span>
+          <span class="cnt" id="hC"></span>
+        </div>
+        <div style="display:flex;gap:3px">
+          <button class="sb" onclick="openGallery()" title="Галерея">🖼️</button>
+          <button class="sb sbd" onclick="clrChat()" title="Очистить">🗑️</button>
+          <button class="mob" onclick="togR()">⚙️</button>
+        </div>
+      </div>
+
+      <div class="msgs" id="msgs">
+        <div class="empty" id="emS">
+          <div class="empty-i">🎨</div>
+          <div class="empty-t">Blink Generator</div>
+        </div>
+      </div>
+
+      <div class="cinp" id="cinp">
+        <div id="editBar"></div>
+        <div class="attach-preview" id="attachPreview"></div>
+        <div class="inr">
+          <button class="attach-btn" onclick="document.getElementById('fileInput').click()"
+            title="Прикрепить изображение">📎</button>
+          <textarea id="pr" placeholder="Сообщение... (Enter — отправить, можно перетащить картинку)"
+            rows="1"></textarea>
+          <button class="sbtn go" id="sBtn" onclick="onSend()">▶</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rz" id="resR"></div>
+
+    <!-- =============================================
+         Right Panel — Settings
+         ============================================= -->
+    <div class="rp" id="rp">
+      <div class="rps">
+
+        <!-- API Key -->
+        <div class="ss">
+          <div class="sl">🔑 API Ключ</div>
+          <select class="ssel" id="kS" onchange="onKS()">
+            <option value="">— Выберите —</option>
+          </select>
+          <div class="sr">
+            <button class="sb sba" onclick="newKE()">+ Новый</button>
+            <button class="sb" onclick="edK()">✏️</button>
+            <button class="sb sbd" onclick="delK()">🗑️</button>
+          </div>
+          <div id="kE" style="display:none" class="ke">
+            <input class="si" type="text" id="kN" placeholder="Название" />
+            <input class="si" type="password" id="kV" placeholder="API ключ" />
+            <div class="sr" style="justify-content:flex-end">
+              <button class="sb" onclick="togKV()">👁️</button>
+              <button class="sb" onclick="canKE()">✕</button>
+              <button class="sb sba" onclick="savK()" id="kSB">OK</button>
+            </div>
+          </div>
+        </div>
+        <div class="hn" style="margin-top:8px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="kPersist" onchange="toggleKeyPersist()">
+            Хранить ключи между перезапусками
+          </label>
+          <div style="margin-top:6px;color:var(--text4);font-size:11px">
+            Если отключить, ключи сохранятся только в этой вкладке и не попадут в экспорт по умолчанию.
+          </div>
+        </div>
+
+        <!-- Model -->
+        <div class="ss">
+          <div class="sl">🤖 Модель</div>
+          <div style="display:flex;gap:2px;margin-bottom:4px;flex-wrap:wrap" id="mC"></div>
+          <select class="ssel" id="mS" onchange="onMS()"></select>
+          <div class="wb" id="mW" style="display:none"></div>
+        </div>
+
+        <!-- System Prompt -->
+        <div class="ss">
+          <div class="sl">📝 Системный промпт</div>
+          <textarea class="sta" id="sP" placeholder="Роль/поведение модели..." rows="2" oninput="svD()"></textarea>
+        </div>
+
+        <!-- Negative Prompt -->
+        <div class="ss">
+          <div class="sl">🚫 Негативный промпт</div>
+          <textarea class="sta" id="nP" placeholder="Чего избегать..." rows="2" oninput="svD()"></textarea>
+          <div class="hn">Добавляется как «Avoid: ...»</div>
+        </div>
+
+        <!-- Presets -->
+        <div class="ss">
+          <div class="sl">⚡ Пресеты промптов</div>
+          <div class="sr">
+            <button class="sb sba" onclick="openPresetEditor(-1)">+ Новый</button>
+            <button class="sb sbw" id="presetSaveBtn" onclick="updateActivePreset()" style="display:none">💾
+              Обновить</button>
+          </div>
+          <div class="preset-list" id="presetList"></div>
+        </div>
+
+        <!-- Image Settings -->
+        <div class="ss" id="iSS">
+          <div class="sl">🖼️ Изображение</div>
+          <select class="ssel" id="aR" onchange="svD()">
+            <option value="">Авто</option>
+            <option value="1:1">1:1 Квадрат</option>
+            <option value="16:9">16:9 Широкий</option>
+            <option value="9:16">9:16 Портрет</option>
+            <option value="4:3">4:3</option>
+            <option value="3:4">3:4</option>
+          </select>
+          <div class="hn">Gemini сам выбирает разрешение.</div>
+        </div>
+
+        <!-- Context -->
+        <div class="ss">
+          <div class="sl">🧠 Контекст</div>
+          <div class="slr">
+            <input type="range" id="cR" min="0" max="100" value="20" oninput="onCR()">
+            <input class="si sli" type="number" id="cI" value="20" min="0" max="100" oninput="onCI()">
+          </div>
+          <div class="hn" id="cH">Последние 20 сообщений.</div>
+          <div class="hn" id="cS">Общий контекст: ~0 ток.</div>
+        </div>
+
+        <!-- Temperature -->
+        <div class="ss">
+          <div class="sl">🌡️ Temperature</div>
+          <div class="slr">
+            <input type="range" id="tR" min="0" max="200" value="100" oninput="onTR()">
+            <input class="si sli" type="number" id="tI" value="1.0" min="0" max="2" step="0.1" oninput="onTI()">
+          </div>
+        </div>
+
+        <!-- Theme -->
+        <div class="ss">
+          <div class="sl">🎨 Тема</div>
+          <div class="thr" id="thR"></div>
+        </div>
+
+        <!-- Export / Import -->
+        <div class="ss">
+          <div class="sl">📦 Данные</div>
+          <div class="sr">
+            <button class="sb" onclick="exportAllData()" title="Экспорт всех данных">📥 Экспорт</button>
+            <button class="sb" onclick="importAllData()" title="Импорт данных">📤 Импорт</button>
+          </div>
+          <div style="margin-top:8px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+              <input type="checkbox" id="exKeys" onchange="lsSet('exKeys', this.checked ? '1' : '0')">
+              Экспортировать ключи
+            </label>
+            <div style="margin-top:6px;color:var(--text4);font-size:11px">
+              По умолчанию ключи исключены из экспорта.
+            </div>
+          </div>
+          <div class="storage-info" id="storageInfo">💾 Загрузка...</div>
+        </div>
+
+        <!-- Keyboard Shortcuts -->
+        <div class="ss">
+          <div class="sl">⌨️ Горячие клавиши</div>
+          <div class="shortcuts-hint">
+            <kbd>Enter</kbd> — отправить<br>
+            <kbd>Shift+Enter</kbd> — новая строка<br>
+            <kbd>Ctrl+Enter</kbd> — отправить из любого места<br>
+            <kbd>Ctrl+Shift+N</kbd> — новый чат<br>
+            <kbd>Ctrl+G</kbd> — галерея<br>
+            <kbd>Ctrl+/</kbd> — фокус на ввод<br>
+            <kbd>Ctrl+Z</kbd> — отмена действия<br>
+            <kbd>Esc</kbd> — закрыть окна
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlays -->
+  <div class="pbd" id="pbd" onclick="clP()"></div>
+  <div class="ov" id="ov" onclick="clOv()"><img id="ovI" src="" /></div>
+  <div class="tst" id="tst"></div>
+  <div id="uC"></div>
+
+  <!-- Gallery Modal -->
+  <div class="gal-ov" id="galOv" onclick="if(event.target===this)closeGallery()">
+    <div class="gal-box">
+      <div class="gal-head">
+        <h3>🖼️ Галерея</h3>
+        <input class="gal-search" id="galSearch" type="text" placeholder="🔍 Поиск по промптам..."
+          oninput="filterGallery()">
+        <button class="sb" onclick="closeGallery()">✕ Закрыть</button>
+      </div>
+      <div class="gal-body" id="galBody"></div>
+    </div>
+  </div>
+
+  <!-- Preset Editor Modal -->
+  <div class="preset-ov" id="presetOv" onclick="if(event.target===this)closePresetEditor()">
+    <div class="preset-box">
+      <div class="preset-box-head">
+        <h3 id="presetEditorTitle">Новый пресет</h3>
+        <button class="sb" onclick="closePresetEditor()">✕</button>
+      </div>
+      <div class="preset-box-body">
+        <label>Название</label>
+        <input class="si" type="text" id="presetNameInput" placeholder="Например: Аниме стиль" />
+        <label>Системный промпт</label>
+        <textarea class="sta" id="presetSysInput" placeholder="Роль/поведение модели..." rows="3"></textarea>
+        <label>Негативный промпт</label>
+        <textarea class="sta" id="presetNegInput" placeholder="Чего избегать..." rows="2"></textarea>
+      </div>
+      <div class="preset-box-foot">
+        <button class="sb" onclick="closePresetEditor()">Отмена</button>
+        <button class="sb sba" onclick="savePresetFromEditor()">💾 Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden file inputs -->
+  <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImportFile(event)">
+  <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="handleFileAttach(event)">
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
