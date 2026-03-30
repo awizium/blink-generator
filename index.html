@@ -28,6 +28,7 @@
           </div>
         </div>
         <input class="lp-search" id="chatSearch" type="text" placeholder="🔍 Поиск по чатам..." oninput="filterChats()">
+        <div class="tag-filter" id="tagFilter" style="display:none"></div>
       </div>
       <div class="cl" id="cl"></div>
     </div>
@@ -55,8 +56,15 @@
         <div class="empty" id="emS">
           <div class="empty-i">🎨</div>
           <div class="empty-t">Blink Generator</div>
+          <div class="empty-sub">Генерация изображений и общение с AI моделями</div>
+          <div class="empty-tips">
+            <span class="empty-tip" onclick="document.getElementById('pr').value='Нарисуй кота в космосе';document.getElementById('pr').focus()">🐱 Кот в космосе</span>
+            <span class="empty-tip" onclick="document.getElementById('pr').value='Пейзаж в стиле Ван Гога';document.getElementById('pr').focus()">🌻 Стиль Ван Гога</span>
+            <span class="empty-tip" onclick="document.getElementById('pr').value='Киберпанк город будущего';document.getElementById('pr').focus()">🌃 Киберпанк</span>
+          </div>
         </div>
       </div>
+      <button class="scroll-top" id="scrollTop" onclick="scrollToBottom()" title="Вниз">↓</button>
 
       <div class="cinp" id="cinp">
         <div id="editBar"></div>
@@ -68,6 +76,7 @@
             rows="1"></textarea>
           <button class="sbtn go" id="sBtn" onclick="onSend()">▶</button>
         </div>
+        <div class="char-count" id="charCount"></div>
       </div>
     </div>
 
@@ -203,20 +212,15 @@
 
         <!-- Keyboard Shortcuts -->
         <div class="ss">
-          <div class="sl">⌨️ Горячие клавиши</div>
+          <div class="sl">⌨️ Горячие клавиши <button class="sc-reset-all" onclick="resetAllShortcuts()" title="Сбросить все">↺ Сброс</button></div>
           <div class="shortcuts-hint">
-            <kbd>Enter</kbd> — отправить<br>
-            <kbd>Shift+Enter</kbd> — новая строка<br>
-            <kbd>Ctrl+Enter</kbd> — отправить из любого места<br>
-            <kbd>Ctrl+Shift+N</kbd> — новый чат<br>
-            <kbd>Ctrl+G</kbd> — галерея<br>
-            <kbd>Ctrl+/</kbd> — фокус на ввод<br>
-            <kbd>Ctrl+Z</kbd> — отмена действия<br>
-            <kbd>Esc</kbd> — закрыть окна
+            <div class="sc-hint-fixed"><kbd>Enter</kbd> — отправить · <kbd>Shift+Enter</kbd> — новая строка</div>
+            <div id="shortcutsContainer"></div>
           </div>
         </div>
 
       </div>
+      <div class="app-ver" id="appVer"></div>
     </div>
   </div>
 
@@ -233,6 +237,7 @@
         <h3>🖼️ Галерея</h3>
         <input class="gal-search" id="galSearch" type="text" placeholder="🔍 Поиск по промптам..."
           oninput="filterGallery()">
+        <button class="sb sba" onclick="galleryDownloadAll()" title="Скачать все изображения">⬇️ Скачать все</button>
         <button class="sb" onclick="closeGallery()">✕ Закрыть</button>
       </div>
       <div class="gal-body" id="galBody"></div>

@@ -425,7 +425,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -435,6 +435,11 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--bg4);
   border-radius: 3px;
+  transition: background .2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text4);
 }
 
 /* =========================================
@@ -543,6 +548,74 @@ body {
   padding: 4px;
 }
 
+/* Tag filter & chat tags */
+.tag-filter {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding: 4px 8px 2px;
+}
+
+.tag-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text3);
+  font-size: 9px;
+  padding: 1px 8px;
+  cursor: pointer;
+  transition: all .12s;
+}
+
+.tag-btn:hover {
+  border-color: var(--accent);
+  color: var(--text2);
+}
+
+.tag-btn.act {
+  background: var(--accent-d);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ci-tags {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.ci-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text4);
+  font-size: 8px;
+  padding: 0 5px;
+  cursor: pointer;
+  transition: all .12s;
+  line-height: 1.6;
+}
+
+.ci-tag:hover {
+  border-color: var(--accent);
+  color: var(--text2);
+}
+
+.ci-tag-x {
+  font-size: 9px;
+  color: var(--text4);
+  cursor: pointer;
+  margin-left: 1px;
+}
+
+.ci-tag-x:hover {
+  color: var(--red);
+}
+
 .ci {
   padding: 8px 10px;
   border-radius: var(--r);
@@ -563,6 +636,7 @@ body {
 .ci.act {
   background: var(--accent-d);
   border-color: var(--accent);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 
 .ci-i {
@@ -610,6 +684,18 @@ body {
 
 .cib.dng:hover {
   color: var(--red);
+}
+
+/* Drag & Drop chat reorder */
+.ci.dragging {
+  opacity: 0.4;
+  border: 1px dashed var(--accent);
+}
+
+.ci.drag-over-chat {
+  border-color: var(--accent);
+  background: var(--accent-d);
+  box-shadow: 0 0 0 1px var(--accent);
 }
 
 /* =========================================
@@ -695,16 +781,59 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--text4);
-  gap: 8px;
+  gap: 10px;
+  padding: 20px;
+  user-select: none;
 }
 
 .empty-i {
-  font-size: 40px;
-  opacity: .25;
+  font-size: 48px;
+  opacity: .3;
+  animation: emFloat 3s ease-in-out infinite;
+}
+
+@keyframes emFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 .empty-t {
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text3);
+}
+
+.empty-sub {
+  font-size: 11px;
+  color: var(--text4);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.empty-tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.empty-tip {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 10px;
+  color: var(--text3);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.empty-tip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-d);
 }
 
 /* =========================================
@@ -722,11 +851,12 @@ body {
 @keyframes fi {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(8px);
   }
 
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -1678,6 +1808,94 @@ body {
   font-size: 10px;
 }
 
+.sc-hint-fixed {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text4);
+  font-size: 10px;
+}
+
+.sc-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+}
+
+.sc-label {
+  flex: 1;
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.sc-key-btn {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: all .15s;
+  min-width: 60px;
+  text-align: center;
+}
+
+.sc-key-btn:hover {
+  border-color: var(--accent);
+  background: var(--bg3);
+}
+
+.sc-key-btn.recording {
+  border-color: var(--accent);
+  background: var(--accent-d);
+  animation: sc-pulse 1s ease-in-out infinite;
+}
+
+@keyframes sc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .6; }
+}
+
+.sc-key-btn kbd {
+  font-size: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text2);
+}
+
+.sc-reset-btn {
+  background: none;
+  border: none;
+  color: var(--text4);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: color .12s;
+}
+
+.sc-reset-btn:hover {
+  color: var(--accent);
+}
+
+.sc-reset-all {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text4);
+  font-size: 9px;
+  padding: 1px 6px;
+  cursor: pointer;
+  margin-left: 6px;
+  transition: all .12s;
+}
+
+.sc-reset-all:hover {
+  color: var(--text2);
+  border-color: var(--accent);
+}
+
 /* =========================================
    Preset Editor Modal
    ========================================= */
@@ -1749,8 +1967,11 @@ body {
   flex-direction: column;
   gap: 3px;
   margin-top: 4px;
-  max-height: 150px;
+  max-height: 400px;
+  min-height: 60px;
+  height: 150px;
   overflow-y: auto;
+  resize: vertical;
 }
 
 .preset-item {
@@ -1810,6 +2031,99 @@ body {
 
 .preset-item .preset-del:hover {
   color: var(--red);
+}
+
+/* =========================================
+   Scroll-to-top button
+   ========================================= */
+.scroll-top {
+  position: absolute;
+  bottom: 12px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 1px solid var(--border-l);
+  color: var(--text3);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all .2s;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: var(--sh);
+}
+
+.scroll-top.vis {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.scroll-top:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* =========================================
+   Character counter
+   ========================================= */
+.char-count {
+  font-size: 9px;
+  color: var(--text4);
+  text-align: right;
+  padding: 2px 4px 0;
+  transition: color .2s;
+  min-height: 14px;
+}
+
+.char-count.warn {
+  color: var(--yellow);
+}
+
+.char-count.over {
+  color: var(--red);
+}
+
+/* =========================================
+   Send button animation
+   ========================================= */
+.sbtn.go.generating {
+  animation: sendPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes sendPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+/* =========================================
+   App version footer
+   ========================================= */
+.app-ver {
+  padding: 8px 10px;
+  text-align: center;
+  font-size: 9px;
+  color: var(--text4);
+  border-top: 1px solid var(--border);
+  opacity: .6;
+  user-select: none;
+}
+
+/* =========================================
+   Improved focus styles
+   ========================================= */
+.sb:focus-visible,
+.sbtn:focus-visible,
+.attach-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 /* =========================================

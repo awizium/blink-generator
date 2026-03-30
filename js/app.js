@@ -123,52 +123,304 @@ async function loadImage(key) {
    Models Configuration
    ===================================================== */
 const ALL_MODELS = [
-  'google/gemini-2.5-flash-image', 'google/gemini-3-pro-image',
+  // === Image Models (Gemini) ===
+  'google/gemini-2.5-flash-image',
+  'google/gemini-3-pro-image',
   'google/gemini-3.1-flash-image-preview',
-  'google/gemini-2.0-flash', 'google/gemini-2.0-flash-lite',
-  'google/gemini-2.5-flash', 'google/gemini-2.5-flash-lite',
-  'google/gemini-2.5-pro', 'google/gemini-3-flash',
-  'google/gemini-3-pro-preview', 'google/gemini-3.1-flash-lite-preview',
+  // === Image Models (Other) ===
+  'openai/gpt-image-1',
+  'openai/gpt-image-1-mini',
+  'openai/gpt-image-1.5',
+  'bfl/flux-2-flex',
+  'bfl/flux-2-klein-4b',
+  'bfl/flux-2-klein-9b',
+  'bfl/flux-2-max',
+  'bfl/flux-2-pro',
+  'bfl/flux-kontext-max',
+  'bfl/flux-kontext-pro',
+  'bfl/flux-pro-1.0-fill',
+  'bfl/flux-pro-1.1',
+  'bfl/flux-pro-1.1-ultra',
+  'bytedance/seed-1.6',
+  'bytedance/seed-1.8',
+  'google/imagen-4.0-fast-generate-001',
+  'google/imagen-4.0-generate-001',
+  'google/imagen-4.0-ultra-generate-001',
+  'prodia/flux-fast-schnell',
+  'recraft/recraft-v2',
+  'recraft/recraft-v3',
+  'recraft/recraft-v4',
+  'recraft/recraft-v4-pro',
+  'xai/grok-imagine-image',
+  'xai/grok-imagine-image-pro',
+  // === Video Models ===
+  'alibaba/wan-v2.5-t2v-preview',
+  'alibaba/wan-v2.6-i2v',
+  'alibaba/wan-v2.6-i2v-flash',
+  'alibaba/wan-v2.6-r2v',
+  'alibaba/wan-v2.6-r2v-flash',
+  'alibaba/wan-v2.6-t2v',
+  'bytedance/seedance-v1.0-lite-i2v',
+  'bytedance/seedance-v1.0-lite-t2v',
+  'bytedance/seedance-v1.0-pro',
+  'bytedance/seedance-v1.0-pro-fast',
+  'bytedance/seedance-v1.5-pro',
+  'google/veo-3.0-fast-generate-001',
+  'google/veo-3.0-generate-001',
+  'google/veo-3.1-fast-generate-001',
+  'google/veo-3.1-generate-001',
+  'klingai/kling-v2.5-turbo-i2v',
+  'klingai/kling-v2.5-turbo-t2v',
+  'klingai/kling-v2.6-i2v',
+  'klingai/kling-v2.6-motion-control',
+  'klingai/kling-v2.6-t2v',
+  'klingai/kling-v3.0-i2v',
+  'klingai/kling-v3.0-t2v',
+  'xai/grok-imagine-video',
+  // === Google ===
+  'google/gemini-2.0-flash',
+  'google/gemini-2.0-flash-lite',
+  'google/gemini-2.5-flash',
+  'google/gemini-2.5-flash-lite',
+  'google/gemini-2.5-pro',
+  'google/gemini-3-flash',
+  'google/gemini-3-pro-preview',
+  'google/gemini-3.1-flash-lite-preview',
   'google/gemini-3.1-pro-preview',
-  'anthropic/claude-3-haiku', 'anthropic/claude-3-opus',
-  'anthropic/claude-3.5-haiku', 'anthropic/claude-3.5-sonnet',
-  'anthropic/claude-3.5-sonnet-20240620', 'anthropic/claude-3.7-sonnet',
-  'anthropic/claude-haiku-4.5', 'anthropic/claude-opus-4',
-  'anthropic/claude-opus-4.1', 'anthropic/claude-opus-4.5',
-  'anthropic/claude-opus-4.6', 'anthropic/claude-sonnet-4',
-  'anthropic/claude-sonnet-4.5', 'anthropic/claude-sonnet-4.6',
-  'openai/gpt-3.5-turbo', 'openai/gpt-4-turbo',
-  'openai/gpt-4.1', 'openai/gpt-4.1-mini', 'openai/gpt-4.1-nano',
-  'openai/gpt-4o', 'openai/gpt-4o-mini',
-  'openai/gpt-5', 'openai/gpt-5-chat', 'openai/gpt-5-mini',
-  'openai/gpt-5-nano', 'openai/gpt-5-pro',
-  'openai/gpt-5.1-instant', 'openai/gpt-5.1-thinking',
-  'openai/gpt-5.2', 'openai/gpt-5.2-chat', 'openai/gpt-5.2-pro',
-  'openai/gpt-5.3-chat', 'openai/gpt-5.4', 'openai/gpt-5.4-mini',
-  'openai/gpt-5.4-nano', 'openai/gpt-5.4-pro',
-  'openai/o1', 'openai/o3', 'openai/o3-mini', 'openai/o3-pro', 'openai/o4-mini',
-  'deepseek/deepseek-r1', 'deepseek/deepseek-v3',
-  'deepseek/deepseek-v3.1', 'deepseek/deepseek-v3.1-terminus',
-  'deepseek/deepseek-v3.2', 'deepseek/deepseek-v3.2-thinking',
-  'xai/grok-2-vision', 'xai/grok-3', 'xai/grok-3-fast',
-  'xai/grok-3-mini', 'xai/grok-3-mini-fast',
-  'xai/grok-4', 'xai/grok-4-fast-non-reasoning',
-  'xai/grok-4-fast-reasoning', 'xai/grok-4.1-fast-non-reasoning',
+  // === Anthropic ===
+  'anthropic/claude-3-haiku',
+  'anthropic/claude-3-opus',
+  'anthropic/claude-3.5-haiku',
+  'anthropic/claude-3.5-sonnet',
+  'anthropic/claude-3.5-sonnet-20240620',
+  'anthropic/claude-3.7-sonnet',
+  'anthropic/claude-haiku-4.5',
+  'anthropic/claude-opus-4',
+  'anthropic/claude-opus-4.1',
+  'anthropic/claude-opus-4.5',
+  'anthropic/claude-opus-4.6',
+  'anthropic/claude-sonnet-4',
+  'anthropic/claude-sonnet-4.5',
+  'anthropic/claude-sonnet-4.6',
+  // === OpenAI ===
+  'openai/gpt-3.5-turbo',
+  'openai/gpt-3.5-turbo-instruct',
+  'openai/gpt-4-turbo',
+  'openai/gpt-4.1',
+  'openai/gpt-4.1-mini',
+  'openai/gpt-4.1-nano',
+  'openai/gpt-4o',
+  'openai/gpt-4o-mini',
+  'openai/gpt-4o-mini-search-preview',
+  'openai/gpt-5',
+  'openai/gpt-5-chat',
+  'openai/gpt-5-codex',
+  'openai/gpt-5-mini',
+  'openai/gpt-5-nano',
+  'openai/gpt-5-pro',
+  'openai/gpt-5.1-codex',
+  'openai/gpt-5.1-codex-max',
+  'openai/gpt-5.1-codex-mini',
+  'openai/gpt-5.1-instant',
+  'openai/gpt-5.1-thinking',
+  'openai/gpt-5.2',
+  'openai/gpt-5.2-chat',
+  'openai/gpt-5.2-codex',
+  'openai/gpt-5.2-pro',
+  'openai/gpt-5.3-chat',
+  'openai/gpt-5.3-codex',
+  'openai/gpt-5.4',
+  'openai/gpt-5.4-mini',
+  'openai/gpt-5.4-nano',
+  'openai/gpt-5.4-pro',
+  'openai/gpt-oss-120b',
+  'openai/gpt-oss-20b',
+  'openai/gpt-oss-safeguard-20b',
+  'openai/o1',
+  'openai/o3',
+  'openai/o3-deep-research',
+  'openai/o3-mini',
+  'openai/o3-pro',
+  'openai/o4-mini',
+  // === DeepSeek ===
+  'deepseek/deepseek-r1',
+  'deepseek/deepseek-v3',
+  'deepseek/deepseek-v3.1',
+  'deepseek/deepseek-v3.1-terminus',
+  'deepseek/deepseek-v3.2',
+  'deepseek/deepseek-v3.2-thinking',
+  // === xAI ===
+  'xai/grok-2-vision',
+  'xai/grok-3',
+  'xai/grok-3-fast',
+  'xai/grok-3-mini',
+  'xai/grok-3-mini-fast',
+  'xai/grok-4',
+  'xai/grok-4-fast-non-reasoning',
+  'xai/grok-4-fast-reasoning',
+  'xai/grok-4.1-fast-non-reasoning',
   'xai/grok-4.1-fast-reasoning',
-  'meta/llama-3.1-70b', 'meta/llama-3.1-8b',
-  'meta/llama-3.2-11b', 'meta/llama-3.2-1b',
-  'meta/llama-3.2-3b', 'meta/llama-3.2-90b',
-  'meta/llama-3.3-70b', 'meta/llama-4-maverick', 'meta/llama-4-scout',
-  'alibaba/qwen-3-14b', 'alibaba/qwen-3-235b',
-  'alibaba/qwen-3-30b', 'alibaba/qwen-3-32b',
-  'alibaba/qwen-3-4b', 'alibaba/qwen-3-8b',
-  'alibaba/qwen-3-coder', 'alibaba/qwq-32b'
+  'xai/grok-4.20-multi-agent',
+  'xai/grok-4.20-multi-agent-beta',
+  'xai/grok-4.20-non-reasoning',
+  'xai/grok-4.20-non-reasoning-beta',
+  'xai/grok-4.20-reasoning',
+  'xai/grok-4.20-reasoning-beta',
+  'xai/grok-code-fast-1',
+  // === Meta ===
+  'meta/llama-3.1-70b',
+  'meta/llama-3.1-8b',
+  'meta/llama-3.2-11b',
+  'meta/llama-3.2-1b',
+  'meta/llama-3.2-3b',
+  'meta/llama-3.2-90b',
+  'meta/llama-3.3-70b',
+  'meta/llama-4-maverick',
+  'meta/llama-4-scout',
+  // === Alibaba ===
+  'alibaba/qwen-3-14b',
+  'alibaba/qwen-3-235b',
+  'alibaba/qwen-3-30b',
+  'alibaba/qwen-3-32b',
+  'alibaba/qwen3-235b-a22b-thinking',
+  'alibaba/qwen3-coder',
+  'alibaba/qwen3-coder-30b-a3b',
+  'alibaba/qwen3-coder-next',
+  'alibaba/qwen3-coder-plus',
+  'alibaba/qwen3-max',
+  'alibaba/qwen3-max-preview',
+  'alibaba/qwen3-max-thinking',
+  'alibaba/qwen3-next-80b-a3b-instruct',
+  'alibaba/qwen3-next-80b-a3b-thinking',
+  'alibaba/qwen3-vl-instruct',
+  'alibaba/qwen3-vl-thinking',
+  'alibaba/qwen3.5-flash',
+  'alibaba/qwen3.5-plus',
+  // === Mistral ===
+  'mistral/codestral',
+  'mistral/devstral-2',
+  'mistral/devstral-small',
+  'mistral/devstral-small-2',
+  'mistral/magistral-medium',
+  'mistral/magistral-small',
+  'mistral/ministral-14b',
+  'mistral/ministral-3b',
+  'mistral/ministral-8b',
+  'mistral/mistral-large-3',
+  'mistral/mistral-medium',
+  'mistral/mistral-nemo',
+  'mistral/mistral-small',
+  'mistral/mixtral-8x22b-instruct',
+  'mistral/pixtral-12b',
+  'mistral/pixtral-large',
+  // === Other Providers ===
+  'amazon/nova-2-lite',
+  'amazon/nova-lite',
+  'amazon/nova-micro',
+  'amazon/nova-pro',
+  'arcee-ai/trinity-large-preview',
+  'arcee-ai/trinity-mini',
+  'cohere/command-a',
+  'inception/mercury-2',
+  'inception/mercury-coder-small',
+  'kwaipilot/kat-coder-pro-v1',
+  'kwaipilot/kat-coder-pro-v2',
+  'meituan/longcat-flash-chat',
+  'meituan/longcat-flash-thinking',
+  'meituan/longcat-flash-thinking-2601',
+  'minimax/minimax-m2',
+  'minimax/minimax-m2.1',
+  'minimax/minimax-m2.1-lightning',
+  'minimax/minimax-m2.5',
+  'minimax/minimax-m2.5-highspeed',
+  'minimax/minimax-m2.7',
+  'minimax/minimax-m2.7-highspeed',
+  'moonshotai/kimi-k2',
+  'moonshotai/kimi-k2-0905',
+  'moonshotai/kimi-k2-thinking',
+  'moonshotai/kimi-k2-thinking-turbo',
+  'moonshotai/kimi-k2-turbo',
+  'moonshotai/kimi-k2.5',
+  'morph/morph-v3-fast',
+  'morph/morph-v3-large',
+  'nvidia/nemotron-3-nano-30b-a3b',
+  'nvidia/nemotron-3-super-120b-a12b',
+  'nvidia/nemotron-nano-12b-v2-vl',
+  'nvidia/nemotron-nano-9b-v2',
+  'perplexity/sonar',
+  'perplexity/sonar-pro',
+  'perplexity/sonar-reasoning-pro',
+  'prime-intellect/intellect-3',
+  'xiaomi/mimo-v2-flash',
+  'xiaomi/mimo-v2-pro',
+  'zai/glm-4.5',
+  'zai/glm-4.5-air',
+  'zai/glm-4.5v',
+  'zai/glm-4.6',
+  'zai/glm-4.6v',
+  'zai/glm-4.6v-flash',
+  'zai/glm-4.7',
+  'zai/glm-4.7-flash',
+  'zai/glm-4.7-flashx',
+  'zai/glm-5',
+  'zai/glm-5-turbo'
 ];
 
 const IMAGE_MODELS = new Set([
   'google/gemini-2.5-flash-image',
   'google/gemini-3-pro-image',
-  'google/gemini-3.1-flash-image-preview'
+  'google/gemini-3.1-flash-image-preview',
+  'openai/gpt-image-1',
+  'openai/gpt-image-1-mini',
+  'openai/gpt-image-1.5',
+  'bfl/flux-2-flex',
+  'bfl/flux-2-klein-4b',
+  'bfl/flux-2-klein-9b',
+  'bfl/flux-2-max',
+  'bfl/flux-2-pro',
+  'bfl/flux-kontext-max',
+  'bfl/flux-kontext-pro',
+  'bfl/flux-pro-1.0-fill',
+  'bfl/flux-pro-1.1',
+  'bfl/flux-pro-1.1-ultra',
+  'bytedance/seed-1.6',
+  'bytedance/seed-1.8',
+  'google/imagen-4.0-fast-generate-001',
+  'google/imagen-4.0-generate-001',
+  'google/imagen-4.0-ultra-generate-001',
+  'prodia/flux-fast-schnell',
+  'recraft/recraft-v2',
+  'recraft/recraft-v3',
+  'recraft/recraft-v4',
+  'recraft/recraft-v4-pro',
+  'xai/grok-imagine-image',
+  'xai/grok-imagine-image-pro'
+]);
+
+const VIDEO_MODELS = new Set([
+  'alibaba/wan-v2.5-t2v-preview',
+  'alibaba/wan-v2.6-i2v',
+  'alibaba/wan-v2.6-i2v-flash',
+  'alibaba/wan-v2.6-r2v',
+  'alibaba/wan-v2.6-r2v-flash',
+  'alibaba/wan-v2.6-t2v',
+  'bytedance/seedance-v1.0-lite-i2v',
+  'bytedance/seedance-v1.0-lite-t2v',
+  'bytedance/seedance-v1.0-pro',
+  'bytedance/seedance-v1.0-pro-fast',
+  'bytedance/seedance-v1.5-pro',
+  'google/veo-3.0-fast-generate-001',
+  'google/veo-3.0-generate-001',
+  'google/veo-3.1-fast-generate-001',
+  'google/veo-3.1-generate-001',
+  'klingai/kling-v2.5-turbo-i2v',
+  'klingai/kling-v2.5-turbo-t2v',
+  'klingai/kling-v2.6-i2v',
+  'klingai/kling-v2.6-motion-control',
+  'klingai/kling-v2.6-t2v',
+  'klingai/kling-v3.0-i2v',
+  'klingai/kling-v3.0-t2v',
+  'xai/grok-imagine-video'
 ]);
 
 let modelFilter = 'image';
@@ -192,6 +444,7 @@ function formatModelOption(model) {
   else if (title !== short) label += ' (' + short + ')';
 
   if (IMAGE_MODELS.has(model)) label += ' 🖼️';
+  if (VIDEO_MODELS.has(model)) label += ' 🎬';
   return label;
 }
 
@@ -201,6 +454,7 @@ function renderModels() {
 
   const filters = [
     { id: 'image', label: '🖼️ Картинки' },
+    { id: 'video', label: '🎬 Видео' },
     { id: 'chat', label: '💬 Чат' },
     { id: 'all', label: 'Все' }
   ];
@@ -220,9 +474,16 @@ function renderModels() {
   const prev = select.value || lsGet('model') || 'google/gemini-3.1-flash-image-preview';
   select.innerHTML = '';
 
-  const filtered = modelFilter === 'all'
-    ? ALL_MODELS
-    : ALL_MODELS.filter(m => modelFilter === 'image' ? IMAGE_MODELS.has(m) : !IMAGE_MODELS.has(m));
+  let filtered;
+  if (modelFilter === 'all') {
+    filtered = ALL_MODELS;
+  } else if (modelFilter === 'image') {
+    filtered = ALL_MODELS.filter(m => IMAGE_MODELS.has(m));
+  } else if (modelFilter === 'video') {
+    filtered = ALL_MODELS.filter(m => VIDEO_MODELS.has(m));
+  } else {
+    filtered = ALL_MODELS.filter(m => !IMAGE_MODELS.has(m) && !VIDEO_MODELS.has(m));
+  }
 
   const groups = new Map();
   filtered.forEach(m => {
@@ -254,13 +515,23 @@ function onModelSelect() {
   const model = document.getElementById('mS').value;
   const wasImage = IMAGE_MODELS.has(lsGet('model') || '');
   const isImage = IMAGE_MODELS.has(model);
+  const isVideo = VIDEO_MODELS.has(model);
+  const isMediaModel = isImage || isVideo;
+  const wasMediaModel = wasImage || VIDEO_MODELS.has(lsGet('model') || '');
   lsSet('model', model);
+
+  let suffix = '';
+  if (isImage) suffix = ' 🖼️';
+  else if (isVideo) suffix = ' 🎬';
   document.getElementById('hM').textContent = model
-    ? formatModelTitle(model) + (isImage ? ' 🖼️' : '')
+    ? formatModelTitle(model) + suffix
     : '—';
 
   const warning = document.getElementById('mW');
-  if (model && !isImage) {
+  if (model && isVideo) {
+    warning.textContent = '🎬 Видео-модель — генерирует видео.';
+    warning.style.display = 'block';
+  } else if (model && !isImage && !isVideo) {
     warning.textContent = 'ℹ️ Текстовая модель — не генерирует картинки.';
     warning.style.display = 'block';
   } else {
@@ -269,15 +540,15 @@ function onModelSelect() {
 
   document.getElementById('iSS').style.display = isImage ? '' : 'none';
 
-  // Автопереключение контекста: image-модели по умолчанию 0
+  // Автопереключение контекста: image/video-модели по умолчанию 0
   const curCtx = parseInt(document.getElementById('cI').value) || 0;
-  if (isImage && !wasImage) {
+  if (isMediaModel && !wasMediaModel) {
     savedTextCtx = curCtx;
     const imgCtx = savedImageCtx !== null ? savedImageCtx : 0;
     document.getElementById('cI').value = imgCtx;
     document.getElementById('cR').value = Math.min(imgCtx, 100);
     updateContextHint(imgCtx);
-  } else if (!isImage && wasImage) {
+  } else if (!isMediaModel && wasMediaModel) {
     savedImageCtx = curCtx;
     const txtCtx = savedTextCtx !== null ? savedTextCtx : 20;
     document.getElementById('cI').value = txtCtx;
@@ -720,39 +991,199 @@ function renderChatList() {
 
   list.innerHTML = '';
 
-  const filtered = query
+  let filtered = query
     ? chats.filter(c =>
       c.name.toLowerCase().includes(query) ||
       (c.messages || []).some(m => (m.text || '').toLowerCase().includes(query))
     )
     : chats;
 
+  // Tag filter
+  if (activeTagFilter) {
+    filtered = filtered.filter(c => (c.tags || []).includes(activeTagFilter));
+  }
+
   if (!filtered.length) {
     list.innerHTML = '<div style="color:var(--text4);font-size:11px;text-align:center;padding:20px">' +
-      (query ? 'Ничего не найдено' : 'Нет чатов') + '</div>';
+      (query ? 'Ничего не найдено' : (activeTagFilter ? 'Нет чатов с тегом «' + escapeHtml(activeTagFilter) + '»' : 'Нет чатов')) + '</div>';
     return;
   }
 
   filtered.forEach(c => {
     const div = document.createElement('div');
     div.className = 'ci' + (c.id === activeId ? ' act' : '');
+    div.dataset.chatId = c.id;
+    // Drag & Drop
+    div.draggable = !query; // Отключаем D&D при поиске
     const dt = new Date(c.created);
+    const tagsHtml = (c.tags || []).map(t =>
+      `<span class="ci-tag" onclick="event.stopPropagation();setTagFilter('${escapeAttr(t)}')" title="Фильтр по тегу">${escapeHtml(t)}<span class="ci-tag-x" onclick="event.stopPropagation();removeTagFromChat('${c.id}','${escapeAttr(t)}')" title="Удалить тег">×</span></span>`
+    ).join('');
     div.innerHTML = `
       <div class="ci-i" onclick="switchChat('${c.id}')">
         <div class="ci-n">${escapeHtml(c.name)}</div>
         <div class="ci-m">${(c.messages || []).length} · ${dt.toLocaleDateString('ru', { day: '2-digit', month: '2-digit' })} ${dt.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })}</div>
+        ${tagsHtml ? '<div class="ci-tags">' + tagsHtml + '</div>' : ''}
       </div>
       <div class="ci-a">
+        <button class="cib" onclick="event.stopPropagation();promptAddTag('${c.id}')" title="Добавить тег">🏷️</button>
         <button class="cib" onclick="event.stopPropagation();exportSingleChat('${c.id}')" title="Экспорт чата">📥</button>
         <button class="cib" onclick="event.stopPropagation();renChat('${c.id}')" title="Переименовать">✏️</button>
         <button class="cib dng" onclick="event.stopPropagation();delChat('${c.id}')" title="Удалить">✕</button>
       </div>`;
+
+    // Drag events
+    div.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', c.id);
+      div.classList.add('dragging');
+    });
+    div.addEventListener('dragend', () => {
+      div.classList.remove('dragging');
+      list.querySelectorAll('.ci').forEach(el => el.classList.remove('drag-over-chat'));
+    });
+    div.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      div.classList.add('drag-over-chat');
+    });
+    div.addEventListener('dragleave', () => {
+      div.classList.remove('drag-over-chat');
+    });
+    div.addEventListener('drop', (e) => {
+      e.preventDefault();
+      div.classList.remove('drag-over-chat');
+      const draggedId = e.dataTransfer.getData('text/plain');
+      if (draggedId === c.id) return;
+      reorderChat(draggedId, c.id);
+    });
+
     list.appendChild(div);
   });
 }
 
+function reorderChat(draggedId, targetId) {
+  const chats = getChats();
+  const draggedIdx = chats.findIndex(c => c.id === draggedId);
+  const targetIdx = chats.findIndex(c => c.id === targetId);
+  if (draggedIdx === -1 || targetIdx === -1) return;
+
+  const [dragged] = chats.splice(draggedIdx, 1);
+  chats.splice(targetIdx, 0, dragged);
+  saveChats(chats);
+  renderChatList();
+  logBlink('↕️', 'Чат перемещён', { id: draggedId, позиция: targetIdx });
+}
+
+let activeTagFilter = null;
+
 function filterChats() {
   renderChatList();
+  renderTagFilter();
+}
+
+function getAllTags() {
+  const chats = getChats();
+  const tags = new Set();
+  chats.forEach(c => (c.tags || []).forEach(t => tags.add(t)));
+  return [...tags].sort();
+}
+
+function addTagToChat(chatId, tag) {
+  tag = tag.trim().toLowerCase();
+  if (!tag) return;
+  const chats = getChats();
+  const chat = chats.find(c => c.id === chatId);
+  if (!chat) return;
+  if (!chat.tags) chat.tags = [];
+  if (chat.tags.includes(tag)) return;
+  chat.tags.push(tag);
+  saveChats(chats);
+  if (currentChat && currentChat.id === chatId) currentChat.tags = chat.tags;
+  renderChatList();
+  renderTagFilter();
+}
+
+function removeTagFromChat(chatId, tag) {
+  const chats = getChats();
+  const chat = chats.find(c => c.id === chatId);
+  if (!chat || !chat.tags) return;
+  chat.tags = chat.tags.filter(t => t !== tag);
+  saveChats(chats);
+  if (currentChat && currentChat.id === chatId) currentChat.tags = chat.tags;
+  renderChatList();
+  renderTagFilter();
+}
+
+function promptAddTag(chatId) {
+  const tag = prompt('Введите тег (без пробелов):');
+  if (tag) addTagToChat(chatId, tag.replace(/\s+/g, '-'));
+}
+
+function setTagFilter(tag) {
+  activeTagFilter = (activeTagFilter === tag) ? null : tag;
+  renderChatList();
+  renderTagFilter();
+}
+
+function renderTagFilter() {
+  const container = document.getElementById('tagFilter');
+  if (!container) return;
+  const tags = getAllTags();
+  if (!tags.length) {
+    container.style.display = 'none';
+    return;
+  }
+  container.style.display = 'flex';
+  container.innerHTML = tags.map(t =>
+    `<button class="tag-btn${activeTagFilter === t ? ' act' : ''}" onclick="setTagFilter('${escapeAttr(t)}')">${escapeHtml(t)}</button>`
+  ).join('');
+}
+
+async function generateSmartChatName(chatId, firstMessage) {
+  const key = activeKey();
+  if (!key) return;
+
+  // Используем быструю дешёвую модель для генерации названия
+  const namingModel = 'google/gemini-2.0-flash-lite';
+
+  try {
+    const resp = await fetch('https://core.blink.new/api/v1/ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key
+      },
+      body: JSON.stringify({
+        model: namingModel,
+        messages: [
+          {
+            role: 'system',
+            content: 'Generate a short chat title (2-5 words, max 30 chars) based on the user message. Reply ONLY with the title, no quotes, no explanation. Use the same language as the user message.'
+          },
+          { role: 'user', content: firstMessage.substring(0, 200) }
+        ],
+        temperature: 0.3
+      })
+    });
+
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const title = (data.choices?.[0]?.message?.content || '').trim().replace(/^["'«]|["'»]$/g, '');
+    if (!title || title.length > 50) return;
+
+    // Обновляем название чата
+    const chats = getChats();
+    const chat = chats.find(c => c.id === chatId);
+    if (!chat) return;
+
+    chat.name = title;
+    if (currentChat && currentChat.id === chatId) currentChat.name = title;
+    saveChats(chats);
+    renderChatList();
+    logBlink('✨', 'Умное название чата', { id: chatId, name: title });
+  } catch (e) {
+    // Не критично — оставляем обрезанное название
+    logBlinkWarn('⚠️', 'Не удалось сгенерировать название', { error: e.message });
+  }
 }
 
 async function renderMessages() {
@@ -764,7 +1195,16 @@ async function renderMessages() {
   messageCounter = 0;
 
   if (!currentChat || !currentChat.messages.length) {
-    box.innerHTML = '<div class="empty" id="emS"><div class="empty-i">🎨</div><div class="empty-t">Blink Generator</div></div>';
+    box.innerHTML = '<div class="empty" id="emS">' +
+      '<div class="empty-i">🎨</div>' +
+      '<div class="empty-t">Blink Generator</div>' +
+      '<div class="empty-sub">Генерация изображений и общение с AI моделями</div>' +
+      '<div class="empty-tips">' +
+        '<span class="empty-tip" onclick="document.getElementById(\'pr\').value=\'Нарисуй кота в космосе\';document.getElementById(\'pr\').focus()">🐱 Кот в космосе</span>' +
+        '<span class="empty-tip" onclick="document.getElementById(\'pr\').value=\'Пейзаж в стиле Ван Гога\';document.getElementById(\'pr\').focus()">🌻 Стиль Ван Гога</span>' +
+        '<span class="empty-tip" onclick="document.getElementById(\'pr\').value=\'Киберпанк город будущего\';document.getElementById(\'pr\').focus()">🌃 Киберпанк</span>' +
+      '</div>' +
+    '</div>';
     updateHeader();
     chatFullyLoaded = true;
     return;
@@ -1699,6 +2139,8 @@ async function generate() {
     await addUserMessage(userText, null, true, userImageKeysForMessage);
     if (currentChat && currentChat.name === 'Новый чат') {
       currentChat.name = userText.length > 40 ? userText.substring(0, 40) + '…' : userText;
+      // Асинхронно генерируем умное название
+      generateSmartChatName(currentChat.id, userText);
     }
     renderChatList();
   }
@@ -1721,7 +2163,7 @@ async function doGenerate(userText, addUser, existingSwipes = [], attachments = 
 
   isGenerating = true;
   const btn = document.getElementById('sBtn');
-  btn.className = 'sbtn stp';
+  btn.className = 'sbtn stp generating';
   btn.innerHTML = '⏹';
 
   // Save user-attached images to IndexedDB
@@ -2201,6 +2643,36 @@ async function galleryDownloadByKey(btn) {
   triggerDownload(src, 0);
 }
 
+async function galleryDownloadAll() {
+  const query = (document.getElementById('galSearch').value || '').toLowerCase().trim();
+  const items = query
+    ? galleryData.filter(i => i.chatName.toLowerCase().includes(query) || (i.prompt || '').toLowerCase().includes(query))
+    : galleryData;
+
+  if (!items.length) { showToast('Нет изображений для скачивания'); return; }
+  if (items.length > 50 && !confirm(`Скачать ${items.length} изображений? Это может занять время.`)) return;
+
+  showToast(`Скачивание ${items.length} изображений...`);
+  let downloaded = 0;
+
+  for (const item of items) {
+    const src = await loadImage(item.key);
+    if (!src) continue;
+    downloaded++;
+    const a = document.createElement('a');
+    a.href = src;
+    const ext = (src.match(/image\/(\w+)/) || [, 'png'])[1];
+    a.download = `blink_${item.key}_${downloaded}.${ext}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    // Небольшая задержка чтобы браузер не блокировал скачивания
+    if (downloaded % 5 === 0) await new Promise(r => setTimeout(r, 200));
+  }
+
+  showToast(`Скачано ${downloaded} изображений`);
+}
+
 
 /* =====================================================
    Presets — Full CRUD with Active Tracking
@@ -2579,6 +3051,37 @@ function autoResize(el) {
   el.style.height = Math.min(el.scrollHeight, 180) + 'px';
 }
 
+
+/* =====================================================
+   Resizable Fields — Save/Restore Heights
+   ===================================================== */
+function initResizableFields() {
+  // Preset list height
+  const presetList = document.getElementById('presetList');
+  if (presetList) {
+    const savedH = lsGet('presetListH');
+    if (savedH) presetList.style.height = savedH + 'px';
+
+    const ro = new ResizeObserver(() => {
+      lsSet('presetListH', Math.round(presetList.offsetHeight));
+    });
+    ro.observe(presetList);
+  }
+
+  // Resizable textareas in settings panel (sP, nP)
+  ['sP', 'nP'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const savedH = lsGet(id + '_h');
+    if (savedH) el.style.height = savedH + 'px';
+
+    const ro = new ResizeObserver(() => {
+      lsSet(id + '_h', Math.round(el.offsetHeight));
+    });
+    ro.observe(el);
+  });
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   const div = document.createElement('div');
@@ -2608,6 +3111,39 @@ function scrollToBottom() {
   requestAnimationFrame(() => {
     container.scrollTop = container.scrollHeight;
   });
+}
+
+function updateScrollTopBtn() {
+  const container = document.getElementById('msgs');
+  const btn = document.getElementById('scrollTop');
+  if (!container || !btn) return;
+  const threshold = 200;
+  const distFromBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
+  if (distFromBottom > threshold) {
+    btn.classList.add('vis');
+  } else {
+    btn.classList.remove('vis');
+  }
+}
+
+function updateCharCount() {
+  const el = document.getElementById('charCount');
+  const pr = document.getElementById('pr');
+  if (!el || !pr) return;
+  const len = pr.value.length;
+  if (len === 0) {
+    el.textContent = '';
+    el.className = 'char-count';
+    return;
+  }
+  el.textContent = len.toLocaleString('ru');
+  if (len > 10000) {
+    el.className = 'char-count over';
+  } else if (len > 5000) {
+    el.className = 'char-count warn';
+  } else {
+    el.className = 'char-count';
+  }
 }
 
 
@@ -2659,6 +3195,139 @@ function setupResize(handleId, panelId, side) {
 
 
 /* =====================================================
+   Customizable Keyboard Shortcuts
+   ===================================================== */
+const DEFAULT_SHORTCUTS = {
+  send:       { key: 'Enter', ctrl: true,  shift: false, label: 'Отправить', desc: 'Отправить из любого места' },
+  newChat:    { key: 'N',     ctrl: true,  shift: true,  label: 'Новый чат', desc: 'Создать новый чат' },
+  gallery:    { key: 'G',     ctrl: true,  shift: false, label: 'Галерея', desc: 'Открыть/закрыть галерею' },
+  focusInput: { key: '/',     ctrl: true,  shift: false, label: 'Фокус ввода', desc: 'Фокус на поле ввода' },
+  undo:       { key: 'Z',     ctrl: true,  shift: false, label: 'Отмена', desc: 'Отменить действие' },
+  escape:     { key: 'Escape', ctrl: false, shift: false, label: 'Закрыть', desc: 'Закрыть окна/оверлеи' },
+  toggleLeft: { key: 'B',     ctrl: true,  shift: false, label: 'Левая панель', desc: 'Показать/скрыть чаты' },
+  toggleRight:{ key: 'I',     ctrl: true,  shift: false, label: 'Правая панель', desc: 'Показать/скрыть настройки' }
+};
+
+function getShortcuts() {
+  try {
+    const raw = lsGet('shortcuts');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      // Merge with defaults to ensure new shortcuts are included
+      const merged = { ...DEFAULT_SHORTCUTS };
+      for (const id in parsed) {
+        if (merged[id]) merged[id] = { ...merged[id], ...parsed[id] };
+      }
+      return merged;
+    }
+  } catch (e) { /* ignore */ }
+  return { ...DEFAULT_SHORTCUTS };
+}
+
+function saveShortcuts(shortcuts) {
+  lsSet('shortcuts', JSON.stringify(shortcuts));
+}
+
+function formatShortcutDisplay(sc) {
+  const parts = [];
+  if (sc.ctrl) parts.push('Ctrl');
+  if (sc.shift) parts.push('Shift');
+  if (sc.alt) parts.push('Alt');
+  const keyName = sc.key === ' ' ? 'Space' : sc.key;
+  parts.push(keyName.length === 1 ? keyName.toUpperCase() : keyName);
+  return parts.join('+');
+}
+
+function matchShortcut(e, sc) {
+  if (sc.ctrl && !e.ctrlKey && !e.metaKey) return false;
+  if (!sc.ctrl && (e.ctrlKey || e.metaKey)) return false;
+  if (sc.shift && !e.shiftKey) return false;
+  if (!sc.shift && e.shiftKey) return false;
+  if (sc.alt && !e.altKey) return false;
+  if (!sc.alt && e.altKey) return false;
+  return e.key.toLowerCase() === sc.key.toLowerCase();
+}
+
+let shortcutRecordingId = null;
+
+function renderShortcutsUI() {
+  const container = document.getElementById('shortcutsContainer');
+  if (!container) return;
+  const shortcuts = getShortcuts();
+  container.innerHTML = '';
+
+  for (const [id, sc] of Object.entries(shortcuts)) {
+    const row = document.createElement('div');
+    row.className = 'sc-row';
+    row.innerHTML = `
+      <span class="sc-label">${escapeHtml(sc.label)}</span>
+      <button class="sc-key-btn${shortcutRecordingId === id ? ' recording' : ''}" data-sc-id="${id}" onclick="startRecordShortcut('${id}')" title="${escapeHtml(sc.desc)}">
+        <kbd>${escapeHtml(formatShortcutDisplay(sc))}</kbd>
+      </button>
+      <button class="sc-reset-btn" onclick="resetShortcut('${id}')" title="Сбросить">↺</button>`;
+    container.appendChild(row);
+  }
+}
+
+function startRecordShortcut(id) {
+  if (shortcutRecordingId === id) {
+    shortcutRecordingId = null;
+    renderShortcutsUI();
+    return;
+  }
+  shortcutRecordingId = id;
+  renderShortcutsUI();
+
+  function onKey(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // Ignore lone modifier keys
+    if (['Control', 'Shift', 'Alt', 'Meta'].includes(e.key)) return;
+
+    const shortcuts = getShortcuts();
+    shortcuts[id] = {
+      ...shortcuts[id],
+      key: e.key === ' ' ? ' ' : e.key,
+      ctrl: e.ctrlKey || e.metaKey,
+      shift: e.shiftKey,
+      alt: e.altKey
+    };
+    saveShortcuts(shortcuts);
+    shortcutRecordingId = null;
+    document.removeEventListener('keydown', onKey, true);
+    renderShortcutsUI();
+    showToast('Горячая клавиша обновлена');
+  }
+
+  document.addEventListener('keydown', onKey, true);
+  // Auto-cancel after 5 seconds
+  setTimeout(() => {
+    if (shortcutRecordingId === id) {
+      shortcutRecordingId = null;
+      document.removeEventListener('keydown', onKey, true);
+      renderShortcutsUI();
+    }
+  }, 5000);
+}
+
+function resetShortcut(id) {
+  const shortcuts = getShortcuts();
+  if (DEFAULT_SHORTCUTS[id]) {
+    shortcuts[id] = { ...DEFAULT_SHORTCUTS[id] };
+    saveShortcuts(shortcuts);
+    renderShortcutsUI();
+    showToast('Сброшено');
+  }
+}
+
+function resetAllShortcuts() {
+  lsSet('shortcuts', '');
+  renderShortcutsUI();
+  showToast('Все горячие клавиши сброшены');
+}
+
+
+/* =====================================================
    Initialization
    ===================================================== */
 async function init() {
@@ -2689,6 +3358,8 @@ async function init() {
   loadAllSettings();
   renderPresets();
   initResize();
+  initResizableFields();
+  renderShortcutsUI();
 
   const chats = getChats();
   const activeId = lsGet('aCh');
@@ -2714,6 +3385,18 @@ async function init() {
 
   // Обновить индикатор хранилища
   updateStorageIndicator();
+  renderTagFilter();
+
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => logBlink('📦', 'Service Worker зарегистрирован', { scope: reg.scope }))
+      .catch(err => logBlinkWarn('⚠️', 'SW регистрация не удалась', { error: err.message }));
+  }
+
+  // App version footer
+  const appVerEl = document.getElementById('appVer');
+  if (appVerEl) appVerEl.textContent = 'v' + APP_VERSION;
 
   const elapsed = (performance.now() - startTime).toFixed(0);
   logBlinkSuccess('✅', `Инициализация завершена за ${elapsed}мс`);
@@ -2742,9 +3425,10 @@ document.getElementById('pr').addEventListener('keydown', (e) => {
   }
 });
 
-// Auto-resize textarea
+// Auto-resize textarea + char counter
 document.getElementById('pr').addEventListener('input', function () {
   autoResize(this);
+  updateCharCount();
 });
 
 // Paste images into textarea
@@ -2761,8 +3445,11 @@ cinpEl.addEventListener('dragleave', () => {
 });
 cinpEl.addEventListener('drop', handleDrop);
 
-// Drag & drop on messages area too
+// Scroll-to-bottom button visibility
 const msgsEl = document.getElementById('msgs');
+msgsEl.addEventListener('scroll', updateScrollTopBtn);
+
+// Drag & drop on messages area too
 msgsEl.addEventListener('dragover', (e) => {
   e.preventDefault();
   cinpEl.classList.add('drag-over');
@@ -2772,26 +3459,31 @@ msgsEl.addEventListener('dragleave', () => {
 });
 msgsEl.addEventListener('drop', handleDrop);
 
-// Global keyboard shortcuts
+// Global keyboard shortcuts (customizable)
 document.addEventListener('keydown', (e) => {
+  // Skip if recording a shortcut
+  if (shortcutRecordingId) return;
+
+  const sc = getShortcuts();
+
   // Escape — закрыть оверлеи
-  if (e.key === 'Escape') {
+  if (matchShortcut(e, sc.escape)) {
     clOv();
     closeGallery();
     closePresetEditor();
     if (editingMessageId) cancelEdit();
   }
 
-  // Ctrl+Z — отмена (не в текстовых полях)
-  if (e.ctrlKey && e.key === 'z') {
+  // Undo (не в текстовых полях)
+  if (matchShortcut(e, sc.undo)) {
     const tag = document.activeElement?.tagName;
     if (tag === 'TEXTAREA' || tag === 'INPUT') return;
     e.preventDefault();
     doUndo();
   }
 
-  // Ctrl+Enter — отправить из любого места
-  if (e.ctrlKey && e.key === 'Enter') {
+  // Send — отправить из любого места
+  if (matchShortcut(e, sc.send)) {
     e.preventDefault();
     if (editingMessageId) {
       confirmEdit();
@@ -2800,24 +3492,36 @@ document.addEventListener('keydown', (e) => {
     }
   }
 
-  // Ctrl+Shift+N — новый чат
-  if (e.ctrlKey && e.shiftKey && e.key === 'N') {
+  // New chat
+  if (matchShortcut(e, sc.newChat)) {
     e.preventDefault();
     newChat();
   }
 
-  // Ctrl+G — галерея
-  if (e.ctrlKey && e.key === 'g') {
+  // Gallery
+  if (matchShortcut(e, sc.gallery)) {
     e.preventDefault();
     const galOv = document.getElementById('galOv');
     if (galOv.classList.contains('act')) closeGallery();
     else openGallery();
   }
 
-  // Ctrl+/ — фокус на поле ввода
-  if (e.ctrlKey && e.key === '/') {
+  // Focus input
+  if (matchShortcut(e, sc.focusInput)) {
     e.preventDefault();
     document.getElementById('pr').focus();
+  }
+
+  // Toggle left panel
+  if (matchShortcut(e, sc.toggleLeft)) {
+    e.preventDefault();
+    togL();
+  }
+
+  // Toggle right panel
+  if (matchShortcut(e, sc.toggleRight)) {
+    e.preventDefault();
+    togR();
   }
 });
 
